@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Thread Local | HandsomeBo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="引用分类知识  ThreadLocal 作用 ThreadLocal 特点  ThreadLocal 的实现是这样的：每个 Thread 维护一个 ThreadLocalMap 映射表，这个映射表的 key 是 ThreadLocal实例本身，value 是真正需要存储的 Object。 也就是说 ThreadLocal 本身并不存储值，它只是作为一个 key 来让线程从 ThreadLocal">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Thread Local">
+<meta property="og:url" content="http://handsomebo.com/2020/07/25/yuque/Thread%20Local/index.html">
+<meta property="og:site_name" content="HandsomeBo">
+<meta property="og:description" content="引用分类知识  ThreadLocal 作用 ThreadLocal 特点  ThreadLocal 的实现是这样的：每个 Thread 维护一个 ThreadLocalMap 映射表，这个映射表的 key 是 ThreadLocal实例本身，value 是真正需要存储的 Object。 也就是说 ThreadLocal 本身并不存储值，它只是作为一个 key 来让线程从 ThreadLocal">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/jpeg/1982501/1608203083371-c4ac40dc-7915-4b54-b2af-becec8116f98.jpeg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/jpeg/1982501/1608203083373-44ed60ca-f7c9-43fe-a95a-46483bb98151.jpeg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/1982501/1608203064858-18120249-639f-47b1-9f33-c49c3a2130a4.png#align=left&display=inline&height=403&margin=%5Bobject%20Object%5D&originHeight=403&originWidth=714&size=0&status=done&style=none&width=714">
+<meta property="article:published_time" content="2020-07-25T03:34:41.000Z">
+<meta property="article:modified_time" content="2022-06-04T09:49:47.272Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2020/jpeg/1982501/1608203083371-c4ac40dc-7915-4b54-b2af-becec8116f98.jpeg">
+  
+    <link rel="alternate" href="/atom.xml" title="HandsomeBo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">HandsomeBo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://handsomebo.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-yuque/Thread Local" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/07/25/yuque/Thread%20Local/" class="article-date">
+  <time class="dt-published" datetime="2020-07-25T03:34:41.000Z" itemprop="datePublished">2020-07-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Thread Local
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>引用分类知识<br><img src="https://cdn.nlark.com/yuque/0/2020/jpeg/1982501/1608203083371-c4ac40dc-7915-4b54-b2af-becec8116f98.jpeg"></li>
+</ul>
+<h2 id="ThreadLocal-作用"><a href="#ThreadLocal-作用" class="headerlink" title="ThreadLocal 作用"></a>ThreadLocal 作用</h2><p><img src="https://cdn.nlark.com/yuque/0/2020/jpeg/1982501/1608203083373-44ed60ca-f7c9-43fe-a95a-46483bb98151.jpeg"></p>
+<h2 id="ThreadLocal-特点"><a href="#ThreadLocal-特点" class="headerlink" title="ThreadLocal 特点"></a>ThreadLocal 特点</h2><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1982501/1608203064858-18120249-639f-47b1-9f33-c49c3a2130a4.png#align=left&display=inline&height=403&margin=%5Bobject%20Object%5D&originHeight=403&originWidth=714&size=0&status=done&style=none&width=714"></p>
+<ol>
+<li>ThreadLocal 的实现是这样的：每个 Thread 维护一个 <code>ThreadLocalMap</code> 映射表，这个映射表的 key 是 <code>ThreadLocal</code>实例本身，value 是真正需要存储的 Object。</li>
+<li>也就是说 <code>ThreadLocal</code> 本身并不存储值，它只是作为一个 key 来让线程从 <code>ThreadLocalMap</code> 获取 value。值得注意的是图中的虚线，表示 <code>ThreadLocalMap</code> 是使用 <code>ThreadLocal</code> 的弱引用作为 Key 的，弱引用的对象在 GC 时会被回收。</li>
+<li>ThreadLocalMap 使用 ThreadLocal 的弱引用作为 key，如果一个 ThreadLocal 没有外部强引用来引用它，那么系统 GC 的时候，这个 ThreadLocal 势必会被回收，这样一来，ThreadLocalMap 中就会出现 key 为 null 的 Entry，就没有办法访问这些 key 为 null 的 Entry 的 value，如果当前线程再迟迟不结束的话，这些 key 为 null 的 Entry 的 value 就会一直存在一条强引用链：<code>Thread Ref -&gt; Thread -&gt; ThreaLocalMap -&gt; Entry -&gt; value</code>永远无法回收，造成内存泄漏。</li>
+<li>总的来说就是，ThreadLocal 里面使用了一个存在弱引用的 map, map 的类型是<code>ThreadLocal.ThreadLocalMap.</code> Map 中的 key 为一个 threadlocal 实例。这个 Map 的确使用了<strong>弱引用</strong>，不过弱引用只是针对 key。每个 key 都弱引用指向 threadlocal。 当把 threadlocal 实例置为 null 以后，没有任何强引用指向 threadlocal 实例，所以 threadlocal 将会被 gc 回收。但是，我们的 value 却不能回收，而这块 value 永远不会被访问到了，所以存在着内存泄露。因为存在一条从<code>current thread</code>连接过来的强引用。只有当前 thread 结束以后，<code>current thread</code>就不会存在栈中，强引用断开，Current Thread、Map value 将全部被 GC 回收。最好的做法是将调用 threadlocal 的 remove 方法，这也是等会后边要说的。</li>
+<li>其实，ThreadLocalMap 的设计中已经考虑到这种情况，也加上了一些防护措施：<strong>在 ThreadLocal 的<code>get(),set(),remove()</code>的时候都会清除线程 ThreadLocalMap 里所有 key 为 null 的 value</strong>。</li>
+</ol>
+<hr>
+<h2 id="内存泄漏的根源"><a href="#内存泄漏的根源" class="headerlink" title="内存泄漏的根源"></a>内存泄漏的根源</h2><p><strong>ThreadLocalMap 的生命周期跟 Thread 一样长**</strong>,其中的 value 没有及时 remove**</p>
+<h2 id="可能引起内存泄漏的情况"><a href="#可能引起内存泄漏的情况" class="headerlink" title="可能引起内存泄漏的情况"></a>可能引起内存泄漏的情况</h2><p>（1）使用 static 的 ThreadLocal，延长了 ThreadLocal 的生命周期，可能导致内存泄漏。<br>（2）分配使用了 ThreadLocal 又不再调用 get(),set(),remove()方法，那么就会导致内存泄漏，因为这块内存一直存在。</p>
+<h2 id="为什么使用弱引用"><a href="#为什么使用弱引用" class="headerlink" title="为什么使用弱引用"></a>为什么使用弱引用</h2><p><strong>（1）key 使用强引用</strong>：引用的<code>ThreadLocal</code>的对象被回收了，但是<code>ThreadLocalMap</code>还持有<code>ThreadLocal</code>的强引用，如果没有手动删除，<code>ThreadLocal</code>不会被回收，导致 Entry 内存泄漏。<br><strong>（2）key 使用弱引用</strong>：引用的 ThreadLocal 的对象被回收了，由于<code>ThreadLocalMap</code>持有<code>ThreadLocal</code>的弱引用，即使没有手动删除，<code>ThreadLocal</code>也会被回收。<code>value</code>在下一次<code>ThreadLocalMap</code>调用<code>set、get、remove</code>的时候会被清除。<br><strong>使用弱引用可以多一层保障</strong>：<strong>弱引用<code>ThreadLocal</code>不会内存泄漏，对应的 value 在下一次<code>ThreadLocalMap</code>调用<code>set、get、remove</code>的时候会被清除</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2020/07/25/yuque/Thread%20Local/" data-id="cl3zp2b5y00101w7s2tnx1o2y" data-title="Thread Local" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/07/25/yuque/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          单例模式
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/08/24/%E9%9B%86%E5%90%88/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">集合</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%9F%BA%E7%A1%80/" rel="tag">Java基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8E%86/" rel="tag">简历</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Java%E5%9F%BA%E7%A1%80/" style="font-size: 20px;">Java基础</a> <a href="/tags/%E7%AE%80%E5%8E%86/" style="font-size: 10px;">简历</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/06/01/%E4%B8%AA%E4%BA%BA%E7%AE%80%E5%8E%86-%E5%BE%90%E5%8D%9A/">个人简历</a>
+          </li>
+        
+          <li>
+            <a href="/2022/06/01/yuque/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E7%9B%B8%E5%85%B3/">系统设计相关</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/15/yuque/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/15/yuque/%E9%97%AE%E9%A2%98%E4%BB%A5%E5%8F%8A%E6%96%B9%E6%A1%88/">问题以及方案</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/15/yuque/%E7%BC%93%E5%AD%98%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8F%8C%E5%86%99%E4%B8%8D%E4%B8%80%E8%87%B4/">缓存和数据库双写不一致</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

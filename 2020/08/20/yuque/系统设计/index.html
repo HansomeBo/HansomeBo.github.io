@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>系统设计 | HandsomeBo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="第一章 走进系统设计 &amp; 新鲜事系统  什么是系统设计 What is System Design 系统设计中常见的问题是什么 How we ask System Design in Interview 怎样回答系统设计问题 How to answer System Design Question 系统设计的 4S 分析法 4S in System Design 系统设计的知识点构成 Ba">
+<meta property="og:type" content="article">
+<meta property="og:title" content="系统设计">
+<meta property="og:url" content="http://handsomebo.com/2020/08/20/yuque/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/index.html">
+<meta property="og:site_name" content="HandsomeBo">
+<meta property="og:description" content="第一章 走进系统设计 &amp; 新鲜事系统  什么是系统设计 What is System Design 系统设计中常见的问题是什么 How we ask System Design in Interview 怎样回答系统设计问题 How to answer System Design Question 系统设计的 4S 分析法 4S in System Design 系统设计的知识点构成 Ba">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-08-20T06:43:15.000Z">
+<meta property="article:modified_time" content="2022-06-04T09:49:47.271Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="HandsomeBo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">HandsomeBo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://handsomebo.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-yuque/系统设计" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/08/20/yuque/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" class="article-date">
+  <time class="dt-published" datetime="2020-08-20T06:43:15.000Z" itemprop="datePublished">2020-08-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      系统设计
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><strong>第一章 走进系统设计 &amp; 新鲜事系统</strong></p>
+<ul>
+<li>什么是系统设计 What is System Design</li>
+<li>系统设计中常见的问题是什么 How we ask System Design in Interview</li>
+<li>怎样回答系统设计问题 How to answer System Design Question</li>
+<li>系统设计的 4S 分析法 4S in System Design</li>
+<li>系统设计的知识点构成 Basic Knowledge of System Design</li>
+<li>设计推特 Design a Twitter</li>
+</ul>
+<p><strong>第二章 秒杀系统与订票系统设计</strong></p>
+<ul>
+<li>高并发场景下引发的常见问题</li>
+<li>了解数据一致性</li>
+<li>什么是动静分离</li>
+<li>读写分离如何实现</li>
+<li>如何防止超卖</li>
+</ul>
+<p><strong>第四章【互动】从用户系统设计中学习数据库与缓存</strong></p>
+<ul>
+<li>通过设计用户系统了解：</li>
+<li>用户系统的特点是什么？</li>
+<li>什么是会话 Session?</li>
+<li>什么是数据库，什么是缓存，他们之间如何配合？</li>
+<li>什么是 Cache Through 什么是 Cache Aside</li>
+<li>NoSQL 与 SQL 数据库的优劣比较与选取标准</li>
+</ul>
+<p><strong>第五章【互动】网站系统，API 设计与短网址</strong></p>
+<ul>
+<li>网站系统的基本构成</li>
+<li>API 设计问题</li>
+<li>什么是 RestAPI</li>
+<li>实战真题</li>
+</ul>
+<p>What happend if you visit <a target="_blank" rel="noopener" href="http://www.google.com/">www.google.com</a>?<br>How to design tiny url?<br>如何设计 News Feed API<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43946031/article/details/117581928">设计 News Feed</a><br>如何设计 mention 功能<br>如何做翻页 Pagination</p>
+<ul>
+<li>关键词：Web, Consistent Hashing, Memcached, Tiny url.</li>
+</ul>
+<p><strong>第六章 优惠券系统设计</strong></p>
+<ul>
+<li>了解优惠券的种类</li>
+<li>介绍优惠券的核心流程<ul>
+<li>发放</li>
+<li>使用</li>
+<li>核销</li>
+</ul>
+</li>
+<li>分析优惠券系统的难点</li>
+<li>如何解决使用优惠券时会出现的分布式问题</li>
+<li>如何解决优惠券系统的高并发问题</li>
+<li>表单结构设计，数据库优化</li>
+<li>优化：快过期券提醒与发券接口限流保护</li>
+</ul>
+<p><strong>第八章【互动】数据库拓展与一致性哈希算法</strong></p>
+<ul>
+<li>什么是数据库拆分</li>
+<li>横向拆分 vs 纵向拆分 Horizontal Sharding vs Vertical Sharding</li>
+<li>一致性哈希算法的两个版本</li>
+<li>实战真题：如何设计限流器 Rate Limiter</li>
+<li>实战真题：如何设计实时数据系统 Data Dog</li>
+</ul>
+<p><strong>第九章【互动】分布式文件系统 GFS</strong></p>
+<ul>
+<li>以 GFS 为例系统学习分布式文件系统，了解如下内容：</li>
+</ul>
+<p>Master Slave 的设计模式<br>分布式文件系统的读写流程<br>怎么处理分布式系统中的 failure 和 recovery 的问题.<br>如何做 replica, check sum 检查<br>了解 consistent hash 和 sharding 的实际应用<br><strong>第十章【直播】文档协同编辑系统设计</strong></p>
+<ul>
+<li>websocket 在协同编辑中的应用</li>
+<li>了解什么是协同编辑</li>
+<li>协同编辑的几种实现方案</li>
+<li>如何解决编辑冲突问题</li>
+<li>了解 OT（ Operational Transformation）原理</li>
+</ul>
+<p><strong>第十二章【互动】分布式数据库 Big Table</strong></p>
+<ul>
+<li>通过设计分布式数据库系统 Bigtable 了解如下内容：</li>
+<li>Big Table 的原理与实现</li>
+<li>了解 NoSQL Database 如何进行读写操作的,以及相应的优化</li>
+<li>了解如何建立 index</li>
+<li>学习 Bloom Filter 的实现原理</li>
+<li>Master Slave 的设计模式</li>
+</ul>
+<p><strong>第十三章【互动】聊天系统 IM System</strong></p>
+<ul>
+<li>聊天系统中的 Pull vs Push</li>
+<li>讲解一种特殊的 Service - Realtime Service</li>
+<li>用 channel 优化群聊</li>
+<li>如何限制多机登录</li>
+<li>用户在线状态的获取与查询 Online Status</li>
+</ul>
+<p><strong>第十四章【直播】视频流系统设计</strong></p>
+<ul>
+<li>视频切分和断点续传如何实现</li>
+<li>如何在架构设计中节省带宽</li>
+<li>小文件存储之视频切片与缩略图存储</li>
+<li>了解视频预加载</li>
+<li>了解 CDN 的基本原理</li>
+</ul>
+<p><strong>第十五章【视频】视频流系统设计（南帝老师主讲）</strong></p>
+<ul>
+<li>视频切分和断点续传如何实现</li>
+<li>如何在架构设计中节省带宽</li>
+<li>小文件存储之视频切片与缩略图存储</li>
+<li>了解视频预加载</li>
+<li>了解 CDN 的基本原理</li>
+</ul>
+<p><strong>第十六章【互动】基于地理位置的信息系统</strong></p>
+<ul>
+<li>系统学习 LBS 相关系统设计的核心要点：</li>
+<li>地理位置信息存储与查询常用算法之 Geohash</li>
+<li>如何设计 Uber</li>
+<li>关键点：学会设计 Uber 以后可以轻松解决设计 Facebook Nearby 和 Yelp</li>
+</ul>
+<p><strong>第十七章【互动】分布式计算 Map Reduce</strong></p>
+<ul>
+<li>学习 Map Reduce 的应用与原理</li>
+<li>了解如何多台机器并行解决算法问题</li>
+<li>掌握 Map 和 Reduce 的原理</li>
+<li>通过三个题目掌握 MapReduce 算法实现：</li>
+<li>WordCount</li>
+<li>InvertedIndex</li>
+<li>Anagram</li>
+</ul>
+<p><strong>第十八章【直播】推特搜索系统设计 Twitter Search</strong></p>
+<ul>
+<li>推特的海量推文数据如何存储</li>
+<li>如何快速搜索</li>
+<li>对搜索结果进行排名</li>
+<li>搜索系统容错能力</li>
+</ul>
+<p><strong>第二十章【互动】爬虫系统与搜索建议系统</strong><br>通过对爬虫系统设计 (Web Crawler) 与 搜索建议系统设计 (Google Suggestion) 了解如下内容：</p>
+<ul>
+<li>多线程</li>
+<li>生产者消费者模型</li>
+<li>爬虫系统的演化：单线程，多线程，分布式</li>
+<li>Trie 结构的原理及应用</li>
+<li>如何在系统设计中使用 Trie</li>
+</ul>
+<p><strong>第二十一章【互动】系统设计的核心必考知识点：数据库索引与事务（增）</strong></p>
+<ul>
+<li>Mysql 索引的原理</li>
+<li>索引的分类</li>
+<li>索引的基本使用原则</li>
+<li>事务的概念和原理</li>
+<li>事务的应用场景</li>
+</ul>
+<p><strong>第二十二章【直播】评论系统设计 Comment system</strong></p>
+<ul>
+<li>如何设计评论区 API</li>
+<li>评论全文搜索功能</li>
+<li>异步任务</li>
+<li>动态缓存</li>
+<li>如何实现评论赞数和踩数</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2020/08/20/yuque/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" data-id="cl3zp2b6o002b1w7s29mndfaq" data-title="系统设计" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/08/20/yuque/JVM/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          JVM
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/08/20/yuque/%E7%AE%97%E6%B3%95/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">算法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%9F%BA%E7%A1%80/" rel="tag">Java基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8E%86/" rel="tag">简历</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Java%E5%9F%BA%E7%A1%80/" style="font-size: 20px;">Java基础</a> <a href="/tags/%E7%AE%80%E5%8E%86/" style="font-size: 10px;">简历</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/06/01/%E4%B8%AA%E4%BA%BA%E7%AE%80%E5%8E%86-%E5%BE%90%E5%8D%9A/">个人简历</a>
+          </li>
+        
+          <li>
+            <a href="/2022/06/01/yuque/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E7%9B%B8%E5%85%B3/">系统设计相关</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/15/yuque/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/15/yuque/%E9%97%AE%E9%A2%98%E4%BB%A5%E5%8F%8A%E6%96%B9%E6%A1%88/">问题以及方案</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/15/yuque/%E7%BC%93%E5%AD%98%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8F%8C%E5%86%99%E4%B8%8D%E4%B8%80%E8%87%B4/">缓存和数据库双写不一致</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

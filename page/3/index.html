@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>HandsomeBo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="HandsomeBo">
+<meta property="og:url" content="http://handsomebo.com/page/3/index.html">
+<meta property="og:site_name" content="HandsomeBo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="HandsomeBo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">HandsomeBo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://handsomebo.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-yuque/zset" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/01/06/yuque/zset/" class="article-date">
+  <time class="dt-published" datetime="2021-01-06T05:21:50.000Z" itemprop="datePublished">2021-01-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/01/06/yuque/zset/">zset</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/yellowriver007/article/details/79021103">skiplist 详解</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2021/01/06/yuque/zset/" data-id="cl3zp2b6000141w7s0mmuelyh" data-title="zset" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-yuque/主从同步" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/01/04/yuque/%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5/" class="article-date">
+  <time class="dt-published" datetime="2021-01-04T07:31:44.000Z" itemprop="datePublished">2021-01-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/01/04/yuque/%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5/">主从同步</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="增量同步"><a href="#增量同步" class="headerlink" title="增量同步"></a>增量同步</h2><p>主节点先将指令记录到环形 buffer 中，异步将 buffer 中的指令同步到从节点。<br>当 buffer 中数据满了的情况下，会覆盖前面的数据，导致同步时有数据丢失，这种情况需要快照同步来弥补。</p>
+<h2 id="快照同步"><a href="#快照同步" class="headerlink" title="快照同步"></a>快照同步</h2><p>主节点进行 bgsave，将全量数据保存到磁盘，再将数据同步到从节点。<br>redis 也支持无盘复制，直接将快照数据通过套接字发送到从节点。</p>
+<h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><p>如果快照同步的时间过长或者复制 buffer 太小，都会导致同步期间的增量指令在复制 buffer 中被覆盖，这样就会导致快照同步完成后无法进行增量复制，然后会再次发起快照同步，所以一定要配置一个合适的 buffer 大小。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2021/01/04/yuque/%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5/" data-id="cl3zp2b6000151w7s277p9hu4" data-title="主从同步" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-yuque/ForkJoinPool" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/12/31/yuque/ForkJoinPool/" class="article-date">
+  <time class="dt-published" datetime="2020-12-31T02:51:45.000Z" itemprop="datePublished">2020-12-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/12/31/yuque/ForkJoinPool/">ForkJoinPool</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2020/12/31/yuque/ForkJoinPool/" data-id="cl3zp2b5o000e1w7s32vtheu4" data-title="ForkJoinPool" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-yuque/热点账户问题" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/12/30/yuque/%E7%83%AD%E7%82%B9%E8%B4%A6%E6%88%B7%E9%97%AE%E9%A2%98/" class="article-date">
+  <time class="dt-published" datetime="2020-12-30T11:30:05.000Z" itemprop="datePublished">2020-12-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/12/30/yuque/%E7%83%AD%E7%82%B9%E8%B4%A6%E6%88%B7%E9%97%AE%E9%A2%98/">热点账户问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="乐观锁"><a href="#乐观锁" class="headerlink" title="乐观锁"></a>乐观锁</h2><p>账户数据使用版本号，保证数据变更不出现覆盖情况</p>
+<h2 id="数据更新"><a href="#数据更新" class="headerlink" title="数据更新"></a>数据更新</h2><p>我们把热点账户按照金额变动方向分为加频账户（余额增加频繁）、减频账户（余额扣减频繁）、双频账户（余额增加扣减均频繁）。</p>
+<ul>
+<li>加频账户处理</li>
+</ul>
+<p>准实时更新余额。先将金额变动插入临时表中，由定时任务按照一定频率汇总发生额，并更新账户余额，而后删除临时记录。当加频账户减钱余额不足时，主动去汇总发生额。这里需要考虑主动汇总发生额和定时任务处理的并发情况，我们在该定时任务执行时设置 redis 锁，防止并发，主动汇总时会去判断这个 redis 锁是否存在，如存在证明定时任务正在执行，无需主动汇总，可能是真的余额不足。主动汇总同样会设置 redis 锁，定时任务同样会判断。</p>
+<ul>
+<li>减频账户处理</li>
+</ul>
+<p>将减频账户拆分多个子账户，减频子账户设置金额报警，如果某个减频子账户余额不足触发报警，会对该子账户做资金归集，将其他子账户余额归集到该子账户（每个子账户设置可归集金额限制）。如在交易过程中发现该子账户余额不足，转向使用其他子账户记账。由于拆分子账户，余额查询时需要汇总各个子账户余额返回；记录主账户流水需要记账后余额，这里需要异步计算汇总。当减频账户加钱时，需要平均分配入账到不通的子账户。</p>
+<ul>
+<li>双频账户处理</li>
+</ul>
+<p>将双频账户拆分多个子账户。加钱时，准实时更新余额，先将子账户金额变动插入临</p>
+<h2 id="数据缓存"><a href="#数据缓存" class="headerlink" title="数据缓存"></a>数据缓存</h2><p>通过异步任务动态统计热点数据</p>
+<ol>
+<li>访问量统计区间，通过统计一定内的访问数据量决定是否为热点数据</li>
+<li>数据失效时间，缓存的数据设置失效时间，每次访问后都更新缓存的失效时间，一定时间之后缓存未访问，缓存数据主动失效</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2020/12/30/yuque/%E7%83%AD%E7%82%B9%E8%B4%A6%E6%88%B7%E9%97%AE%E9%A2%98/" data-id="cl3zp2b6g00211w7s0tfrhqsm" data-title="热点账户问题" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-yuque/Hystrix配置过大的超时时间" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/12/29/yuque/Hystrix%E9%85%8D%E7%BD%AE%E8%BF%87%E5%A4%A7%E7%9A%84%E8%B6%85%E6%97%B6%E6%97%B6%E9%97%B4/" class="article-date">
+  <time class="dt-published" datetime="2020-12-29T07:22:37.000Z" itemprop="datePublished">2020-12-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/12/29/yuque/Hystrix%E9%85%8D%E7%BD%AE%E8%BF%87%E5%A4%A7%E7%9A%84%E8%B6%85%E6%97%B6%E6%97%B6%E9%97%B4/">Hystrix配置过大的超时时间</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><img src="https://cdn.nlark.com/yuque/0/2020/png/1982501/1609226687376-07a7f027-792a-44a4-bbb7-c99a87205b3c.png#align=left&display=inline&height=311&margin=%5Bobject%20Object%5D&name=image.png&originHeight=311&originWidth=904&size=107906&status=done&style=none&width=904" alt="image.png"><br><img src="https://cdn.nlark.com/yuque/0/2020/png/1982501/1609226700029-44a56c0c-7d84-4ddd-b910-da54496151d5.png#align=left&display=inline&height=395&margin=%5Bobject%20Object%5D&name=image.png&originHeight=395&originWidth=904&size=132865&status=done&style=none&width=904" alt="image.png"></p>
+<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>接口响应时间过长导致 Hystrix 线程池里线程全部占用满，进而导致其他请求全部都请求失败</p>
+<ol>
+<li>优化业务接口的响应时间，一般接口的响应时间在 200ms 以内正常</li>
+<li>hystrix 超时时间设置在 1s</li>
+<li>当网络出现偶然抖动时，接口调用时间可能会超过 1s，所以还需要通过 ribbon 进行重试</li>
+<li>因为有重试的可能出现，业务接口需要用分布式锁保证幂等</li>
+</ol>
+<h2 id="结合业务场景"><a href="#结合业务场景" class="headerlink" title="结合业务场景"></a>结合业务场景</h2><p>账户服务的账户信息查询接口关联的冻结登记表，导致查询效率比较慢</p>
+<ol>
+<li>分拆接口，将此接口进一步拆分成多个接口，字段变动少的接口和字段变动比较频繁的接口分开，尽量使得查询不包含冗余字段</li>
+<li>添加缓存，对查多改少的接口添加缓存</li>
+<li>优化 SQL，去掉表关联查询</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2020/12/29/yuque/Hystrix%E9%85%8D%E7%BD%AE%E8%BF%87%E5%A4%A7%E7%9A%84%E8%B6%85%E6%97%B6%E6%97%B6%E9%97%B4/" data-id="cl3zp2b5q000i1w7sag3o3myr" data-title="Hystrix配置过大的超时时间" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-yuque/技术问题及解决方案" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/12/29/yuque/%E6%8A%80%E6%9C%AF%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" class="article-date">
+  <time class="dt-published" datetime="2020-12-29T07:21:38.000Z" itemprop="datePublished">2020-12-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/12/29/yuque/%E6%8A%80%E6%9C%AF%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">技术问题及解决方案</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2020/12/29/yuque/%E6%8A%80%E6%9C%AF%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" data-id="cl3zp2b6c001s1w7sfmznfllc" data-title="技术问题及解决方案" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-yuque/通信" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/12/28/yuque/%E9%80%9A%E4%BF%A1/" class="article-date">
+  <time class="dt-published" datetime="2020-12-28T02:55:30.000Z" itemprop="datePublished">2020-12-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/12/28/yuque/%E9%80%9A%E4%BF%A1/">通信</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="通信流程"><a href="#通信流程" class="headerlink" title="通信流程"></a>通信流程</h2><ol>
+<li>Broker 启动时将自己注册到 NameServer，之后每隔 30s 向 NameServer 上报 topic 的路由信息。</li>
+<li>Producer&#x2F;Consumer 启动时和 NameServer 建立长连接，从本地缓存中获取 topic 路由信息，获取不到则从 NameServer 中拉取路由信息。</li>
+<li>Producer&#x2F;Consumer 根据 topic 路由信息从 Broker 中发送或拉取消息。</li>
+</ol>
+<h2 id="通信方式"><a href="#通信方式" class="headerlink" title="通信方式"></a>通信方式</h2><p>同步、异步、单向（无需关注 response，一般用来发送心跳）</p>
+<h2 id="设计"><a href="#设计" class="headerlink" title="设计"></a>设计</h2><p>使用 Netty 作为底层通信库、遵循 Reactor 多线程模型。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2020/12/28/yuque/%E9%80%9A%E4%BF%A1/" data-id="cl3zp2b6r002j1w7s1iwgc770" data-title="通信" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-yuque/PageCache" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/12/26/yuque/PageCache/" class="article-date">
+  <time class="dt-published" datetime="2020-12-26T06:44:33.000Z" itemprop="datePublished">2020-12-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/12/26/yuque/PageCache/">PageCache</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2020/12/26/yuque/PageCache/" data-id="cl3zp2b5v000u1w7s7e6kdjpz" data-title="PageCache" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-yuque/Copy-On-Write" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/12/26/yuque/Copy-On-Write/" class="article-date">
+  <time class="dt-published" datetime="2020-12-26T06:44:05.000Z" itemprop="datePublished">2020-12-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/12/26/yuque/Copy-On-Write/">Copy-On-Write</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2020/12/26/yuque/Copy-On-Write/" data-id="cl3zp2b5m000a1w7scbkdhn5g" data-title="Copy-On-Write" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-yuque/系统知识" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/12/26/yuque/%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86/" class="article-date">
+  <time class="dt-published" datetime="2020-12-26T05:26:35.000Z" itemprop="datePublished">2020-12-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/12/26/yuque/%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86/">系统知识</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2020/12/26/yuque/%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86/" data-id="cl3zp2b6n002a1w7sbp6o1dn8" data-title="系统知识" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%9F%BA%E7%A1%80/" rel="tag">Java基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8E%86/" rel="tag">简历</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Java%E5%9F%BA%E7%A1%80/" style="font-size: 20px;">Java基础</a> <a href="/tags/%E7%AE%80%E5%8E%86/" style="font-size: 10px;">简历</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/06/01/%E4%B8%AA%E4%BA%BA%E7%AE%80%E5%8E%86-%E5%BE%90%E5%8D%9A/">个人简历</a>
+          </li>
+        
+          <li>
+            <a href="/2022/06/01/yuque/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E7%9B%B8%E5%85%B3/">系统设计相关</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/15/yuque/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/15/yuque/%E9%97%AE%E9%A2%98%E4%BB%A5%E5%8F%8A%E6%96%B9%E6%A1%88/">问题以及方案</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/15/yuque/%E7%BC%93%E5%AD%98%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8F%8C%E5%86%99%E4%B8%8D%E4%B8%80%E8%87%B4/">缓存和数据库双写不一致</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

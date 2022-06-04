@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>HandsomeBo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="HandsomeBo">
+<meta property="og:url" content="http://handsomebo.com/page/9/index.html">
+<meta property="og:site_name" content="HandsomeBo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="HandsomeBo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">HandsomeBo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://handsomebo.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-yuque/线程池" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/08/20/yuque/%E7%BA%BF%E7%A8%8B%E6%B1%A0/" class="article-date">
+  <time class="dt-published" datetime="2020-08-20T06:46:29.000Z" itemprop="datePublished">2020-08-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/08/20/yuque/%E7%BA%BF%E7%A8%8B%E6%B1%A0/">线程池</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="重要属性"><a href="#重要属性" class="headerlink" title="重要属性"></a>重要属性</h2><p>corePoolSize 核心线程数<br>maxmumPoolSize<br>keepLiveTime<br>Queue<br><img src="https://cdn.nlark.com/yuque/0/2022/png/1982501/1651990382654-47aaa0a6-bcd1-441f-a01a-7ad973356493.png#clientId=u1f8d95aa-51fb-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=1417&id=uc0f099f2&margin=%5Bobject%20Object%5D&name=image.png&originHeight=2126&originWidth=2103&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=253536&status=done&style=none&taskId=u1e9536fe-cf1a-4ae8-89af-68a2e6b2604&title=&width=1402" alt="image.png"></p>
+<h2 id="线程数计算方法"><a href="#线程数计算方法" class="headerlink" title="线程数计算方法"></a>线程数计算方法</h2><table>
+<thead>
+<tr>
+<th>方案</th>
+<th>问题</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><em>Ncpu</em>&#x3D;<em>number</em> <em>of</em> <em>CPUsUcpu</em>&#x3D;<em>target</em> <em>CPU</em> <em>utilization</em>,0≤<em>Ucpu</em>≤1<em>CW</em>&#x3D;<em>ratio</em> <em>of</em> <em>wait</em> <em>time</em> <em>to</em> <em>compute</em> <em>timeThe</em> <em>optimal</em> <em>pool</em> <em>size</em> <em>for</em> <em>keeping</em> <em>the</em> <em>processors</em> <em>at</em> <em>the</em> <em>desired</em> <em>utilization</em> <em>isNthreads</em>&#x3D;<em>Ncpu</em>∗<em>Ucpu</em>∗(1+<em>CW</em>)</td>
+<td>出自《Java 并发编程实践》</td>
+</tr>
+<tr>
+<td>该方案偏理论化。首先，线程计算的时间和等待的时间要如何确定呢？这个在实际开发中很难得到确切的值。另外计算出来的线程个数逼近线程实体的个数，Java 线程池可以利用线程切换的方式最大程度利用 CPU 核数，这样计算出来的结果是非常偏离业务场景的</td>
+<td></td>
+</tr>
+<tr>
+<td><em>coreSize</em>&#x3D;2∗<em>NcpumaxSize</em>&#x3D;25∗<em>Ncpu</em></td>
+<td>没有考虑应用中往往使用多个线程池的情况，统一的配置明显不符合多样的业务场景。</td>
+</tr>
+<tr>
+<td><em>coreSize</em>&#x3D;<em>tps</em>∗<em>timemaxSize</em>&#x3D;<em>tps</em>∗<em>time</em>∗(1.7∼2)</td>
+<td>这种计算方式，考虑到了业务场景，但是该模型是在假定流量平均分布得出的。业务场景的流量往往是随机的，这样不符合真实情况。</td>
+</tr>
+</tbody></table>
+<p>tomcat 是请求连接数默认 200，如果是 IO 密集型，那么在 CPU 调度其他线程时，IO 任务还可以处理，这样更多线程数能同时处理更多 IO 任务，CPU 密集型就没办法了，所以线程都要争夺 CPU 资源，一般设置 CPU 核心数+1 就行了。</p>
+<p>一个 CPU 核都想跑满 100%，理论 线程数&#x3D; (IO 时间+ CPU 计算时间）&#x2F; CPU 计算时间；如果 CPU 密集型 的 IO 时间 ≈0，此时为 CPU 核数；网上流传的 IO 密集型认为 IO 时间 ≈CPU 时间，此时为 CPU 核数*2；常规的 Web 服务下 IO 时间远大于 CPU 时间，所以 dubbo 设置为 200，这个我猜主要是参考了业界老油条 Tomcat 的默认配置，不同场景下可能有不小的优化空间。</p>
+<h2 id="动态化线程池"><a href="#动态化线程池" class="headerlink" title="动态化线程池"></a>动态化线程池</h2><p>1.<strong>简化线程池配置</strong>：线程池构造参数有 8 个，但是最核心的是 3 个：corePoolSize、maximumPoolSize，workQueue，它们最大程度地决定了线程池的任务分配和线程分配策略。考虑到在实际应用中我们获取并发性的场景主要是两种：（1）并行执行子任务，提高响应速度。这种情况下，应该使用同步队列，没有什么任务应该被缓存下来，而是应该立即执行。（2）并行执行大批次任务，提升吞吐量。这种情况下，应该使用有界队列，使用队列去缓冲大批量的任务，队列容量必须声明，防止任务无限制堆积。所以线程池只需要提供这三个关键参数的配置，并且提供两种队列的选择，就可以满足绝大多数的业务需求，Less is More。 2.<strong>参数可动态修改</strong>：为了解决参数不好配，修改参数成本高等问题。在 Java 线程池留有高扩展性的基础上，封装线程池，允许线程池监听同步外部的消息，根据消息进行修改配置。将线程池的配置放置在平台侧，允许开发同学简单的查看、修改线程池配置。 3.<strong>增加线程池监控</strong>：对某事物缺乏状态的观测，就对其改进无从下手。在线程池执行任务的生命周期添加监控能力，帮助开发同学了解线程池状态。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2020/08/20/yuque/%E7%BA%BF%E7%A8%8B%E6%B1%A0/" data-id="cl3zp2b6p002e1w7s5ey2b12c" data-title="线程池" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-yuque/锁" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/08/20/yuque/%E9%94%81/" class="article-date">
+  <time class="dt-published" datetime="2020-08-20T06:46:19.000Z" itemprop="datePublished">2020-08-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/08/20/yuque/%E9%94%81/">锁</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>lock 接口基本原理<br><img src="https://cdn.nlark.com/yuque/0/2020/png/1982501/1608881005672-cfac1d7f-e4ac-4ad4-b6c1-8020baa69fc2.png#align=left&display=inline&height=805&margin=%5Bobject%20Object%5D&name=image.png&originHeight=805&originWidth=1356&size=95936&status=done&style=none&width=1356" alt="image.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2020/08/20/yuque/%E9%94%81/" data-id="cl3zp2b6s002l1w7s1xxsbi2j" data-title="锁" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-yuque/JVM" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/08/20/yuque/JVM/" class="article-date">
+  <time class="dt-published" datetime="2020-08-20T06:45:57.000Z" itemprop="datePublished">2020-08-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/08/20/yuque/JVM/">JVM</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u011423880/article/details/112133200">JVM 元空间</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2020/08/20/yuque/JVM/" data-id="cl3zp2b5r000l1w7s1dt69pxu" data-title="JVM" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-yuque/系统设计" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/08/20/yuque/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" class="article-date">
+  <time class="dt-published" datetime="2020-08-20T06:43:15.000Z" itemprop="datePublished">2020-08-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/08/20/yuque/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">系统设计</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><strong>第一章 走进系统设计 &amp; 新鲜事系统</strong></p>
+<ul>
+<li>什么是系统设计 What is System Design</li>
+<li>系统设计中常见的问题是什么 How we ask System Design in Interview</li>
+<li>怎样回答系统设计问题 How to answer System Design Question</li>
+<li>系统设计的 4S 分析法 4S in System Design</li>
+<li>系统设计的知识点构成 Basic Knowledge of System Design</li>
+<li>设计推特 Design a Twitter</li>
+</ul>
+<p><strong>第二章 秒杀系统与订票系统设计</strong></p>
+<ul>
+<li>高并发场景下引发的常见问题</li>
+<li>了解数据一致性</li>
+<li>什么是动静分离</li>
+<li>读写分离如何实现</li>
+<li>如何防止超卖</li>
+</ul>
+<p><strong>第四章【互动】从用户系统设计中学习数据库与缓存</strong></p>
+<ul>
+<li>通过设计用户系统了解：</li>
+<li>用户系统的特点是什么？</li>
+<li>什么是会话 Session?</li>
+<li>什么是数据库，什么是缓存，他们之间如何配合？</li>
+<li>什么是 Cache Through 什么是 Cache Aside</li>
+<li>NoSQL 与 SQL 数据库的优劣比较与选取标准</li>
+</ul>
+<p><strong>第五章【互动】网站系统，API 设计与短网址</strong></p>
+<ul>
+<li>网站系统的基本构成</li>
+<li>API 设计问题</li>
+<li>什么是 RestAPI</li>
+<li>实战真题</li>
+</ul>
+<p>What happend if you visit <a target="_blank" rel="noopener" href="http://www.google.com/">www.google.com</a>?<br>How to design tiny url?<br>如何设计 News Feed API<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43946031/article/details/117581928">设计 News Feed</a><br>如何设计 mention 功能<br>如何做翻页 Pagination</p>
+<ul>
+<li>关键词：Web, Consistent Hashing, Memcached, Tiny url.</li>
+</ul>
+<p><strong>第六章 优惠券系统设计</strong></p>
+<ul>
+<li>了解优惠券的种类</li>
+<li>介绍优惠券的核心流程<ul>
+<li>发放</li>
+<li>使用</li>
+<li>核销</li>
+</ul>
+</li>
+<li>分析优惠券系统的难点</li>
+<li>如何解决使用优惠券时会出现的分布式问题</li>
+<li>如何解决优惠券系统的高并发问题</li>
+<li>表单结构设计，数据库优化</li>
+<li>优化：快过期券提醒与发券接口限流保护</li>
+</ul>
+<p><strong>第八章【互动】数据库拓展与一致性哈希算法</strong></p>
+<ul>
+<li>什么是数据库拆分</li>
+<li>横向拆分 vs 纵向拆分 Horizontal Sharding vs Vertical Sharding</li>
+<li>一致性哈希算法的两个版本</li>
+<li>实战真题：如何设计限流器 Rate Limiter</li>
+<li>实战真题：如何设计实时数据系统 Data Dog</li>
+</ul>
+<p><strong>第九章【互动】分布式文件系统 GFS</strong></p>
+<ul>
+<li>以 GFS 为例系统学习分布式文件系统，了解如下内容：</li>
+</ul>
+<p>Master Slave 的设计模式<br>分布式文件系统的读写流程<br>怎么处理分布式系统中的 failure 和 recovery 的问题.<br>如何做 replica, check sum 检查<br>了解 consistent hash 和 sharding 的实际应用<br><strong>第十章【直播】文档协同编辑系统设计</strong></p>
+<ul>
+<li>websocket 在协同编辑中的应用</li>
+<li>了解什么是协同编辑</li>
+<li>协同编辑的几种实现方案</li>
+<li>如何解决编辑冲突问题</li>
+<li>了解 OT（ Operational Transformation）原理</li>
+</ul>
+<p><strong>第十二章【互动】分布式数据库 Big Table</strong></p>
+<ul>
+<li>通过设计分布式数据库系统 Bigtable 了解如下内容：</li>
+<li>Big Table 的原理与实现</li>
+<li>了解 NoSQL Database 如何进行读写操作的,以及相应的优化</li>
+<li>了解如何建立 index</li>
+<li>学习 Bloom Filter 的实现原理</li>
+<li>Master Slave 的设计模式</li>
+</ul>
+<p><strong>第十三章【互动】聊天系统 IM System</strong></p>
+<ul>
+<li>聊天系统中的 Pull vs Push</li>
+<li>讲解一种特殊的 Service - Realtime Service</li>
+<li>用 channel 优化群聊</li>
+<li>如何限制多机登录</li>
+<li>用户在线状态的获取与查询 Online Status</li>
+</ul>
+<p><strong>第十四章【直播】视频流系统设计</strong></p>
+<ul>
+<li>视频切分和断点续传如何实现</li>
+<li>如何在架构设计中节省带宽</li>
+<li>小文件存储之视频切片与缩略图存储</li>
+<li>了解视频预加载</li>
+<li>了解 CDN 的基本原理</li>
+</ul>
+<p><strong>第十五章【视频】视频流系统设计（南帝老师主讲）</strong></p>
+<ul>
+<li>视频切分和断点续传如何实现</li>
+<li>如何在架构设计中节省带宽</li>
+<li>小文件存储之视频切片与缩略图存储</li>
+<li>了解视频预加载</li>
+<li>了解 CDN 的基本原理</li>
+</ul>
+<p><strong>第十六章【互动】基于地理位置的信息系统</strong></p>
+<ul>
+<li>系统学习 LBS 相关系统设计的核心要点：</li>
+<li>地理位置信息存储与查询常用算法之 Geohash</li>
+<li>如何设计 Uber</li>
+<li>关键点：学会设计 Uber 以后可以轻松解决设计 Facebook Nearby 和 Yelp</li>
+</ul>
+<p><strong>第十七章【互动】分布式计算 Map Reduce</strong></p>
+<ul>
+<li>学习 Map Reduce 的应用与原理</li>
+<li>了解如何多台机器并行解决算法问题</li>
+<li>掌握 Map 和 Reduce 的原理</li>
+<li>通过三个题目掌握 MapReduce 算法实现：</li>
+<li>WordCount</li>
+<li>InvertedIndex</li>
+<li>Anagram</li>
+</ul>
+<p><strong>第十八章【直播】推特搜索系统设计 Twitter Search</strong></p>
+<ul>
+<li>推特的海量推文数据如何存储</li>
+<li>如何快速搜索</li>
+<li>对搜索结果进行排名</li>
+<li>搜索系统容错能力</li>
+</ul>
+<p><strong>第二十章【互动】爬虫系统与搜索建议系统</strong><br>通过对爬虫系统设计 (Web Crawler) 与 搜索建议系统设计 (Google Suggestion) 了解如下内容：</p>
+<ul>
+<li>多线程</li>
+<li>生产者消费者模型</li>
+<li>爬虫系统的演化：单线程，多线程，分布式</li>
+<li>Trie 结构的原理及应用</li>
+<li>如何在系统设计中使用 Trie</li>
+</ul>
+<p><strong>第二十一章【互动】系统设计的核心必考知识点：数据库索引与事务（增）</strong></p>
+<ul>
+<li>Mysql 索引的原理</li>
+<li>索引的分类</li>
+<li>索引的基本使用原则</li>
+<li>事务的概念和原理</li>
+<li>事务的应用场景</li>
+</ul>
+<p><strong>第二十二章【直播】评论系统设计 Comment system</strong></p>
+<ul>
+<li>如何设计评论区 API</li>
+<li>评论全文搜索功能</li>
+<li>异步任务</li>
+<li>动态缓存</li>
+<li>如何实现评论赞数和踩数</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2020/08/20/yuque/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" data-id="cl3zp2b6o002b1w7s29mndfaq" data-title="系统设计" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-yuque/算法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/08/20/yuque/%E7%AE%97%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2020-08-20T06:42:49.000Z" itemprop="datePublished">2020-08-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/08/20/yuque/%E7%AE%97%E6%B3%95/">算法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="https://wizardforcel.gitbooks.io/the-art-of-programming-by-july/content/">https://wizardforcel.gitbooks.io/the-art-of-programming-by-july/content/</a><br><a target="_blank" rel="noopener" href="https://stomachache007.wordpress.com/category/blog/">https://stomachache007.wordpress.com/category/blog/</a></p>
+<h1 id="回溯"><a href="#回溯" class="headerlink" title="回溯"></a>回溯</h1><h4 id="题型一：排列、组合、子集相关问题"><a href="#题型一：排列、组合、子集相关问题" class="headerlink" title="题型一：排列、组合、子集相关问题"></a>题型一：排列、组合、子集相关问题</h4><p>提示：这部分练习可以帮助我们熟悉「回溯算法」的一些概念和通用的解题思路。解题的步骤是：先画图，再编码。去思考可以剪枝的条件， 为什么有的时候用 used 数组，有的时候设置搜索起点 begin 变量，理解状态变量设计的想法。 46. 全排列（中等） 47. 全排列 II（中等）：思考为什么造成了重复，如何在搜索之前就判断这一支会产生重复； 39. 组合总和（中等） 40. 组合总和 II（中等） 77. 组合（中等） 78. 子集（中等） 90. 子集 II（中等）：剪枝技巧同 47 题、39 题、40 题； 60. 第 k 个排列（中等）：利用了剪枝的思想，减去了大量枝叶，直接来到需要的叶子结点； 93. 复原 IP 地址（中等）</p>
+<h4 id="题型二：Flood-Fill"><a href="#题型二：Flood-Fill" class="headerlink" title="题型二：Flood Fill"></a>题型二：Flood Fill</h4><p>提示：Flood 是「洪水」的意思，Flood Fill 直译是「泛洪填充」的意思，体现了洪水能够从一点开始，迅速填满当前位置附近的地势低的区域。类似的应用还有：PS 软件中的「点一下把这一片区域的颜色都替换掉」，扫雷游戏「点一下打开一大片没有雷的区域」。<br>下面这几个问题，思想不难，但是初学的时候代码很不容易写对，并且也很难调试。我们的建议是多写几遍，忘记了就再写一次，参考规范的编写实现（设置 visited 数组，设置方向数组，抽取私有方法），把代码写对。 733. 图像渲染（Flood Fill，中等） 200. 岛屿数量（中等） 130. 被围绕的区域（中等） 79. 单词搜索（中等）<br>说明：以上问题都不建议修改输入数据，设置 visited 数组是标准的做法。可能会遇到参数很多，是不是都可以写成成员变量的问题，面试中拿不准的记得问一下面试官</p>
+<h4 id="题型三：字符串中的回溯问题"><a href="#题型三：字符串中的回溯问题" class="headerlink" title="题型三：字符串中的回溯问题"></a>题型三：字符串中的回溯问题</h4><p>提示：字符串的问题的特殊之处在于，字符串的拼接生成新对象，因此在这一类问题上没有显示「回溯」的过程，但是如果使用 StringBuilder 拼接字符串就另当别论。<br>在这里把它们单独作为一个题型，是希望朋友们能够注意到这个非常细节的地方。 17. 电话号码的字母组合（中等），题解； 784. 字母大小写全排列（中等）； 22. 括号生成（中等） ：这道题广度优先遍历也很好写，可以通过这个问题理解一下为什么回溯算法都是深度优先遍历，并且都用递归来写。<br>题型四：游戏问题<br>回溯算法是早期简单的人工智能，有些教程把回溯叫做暴力搜索，但回溯没有那么暴力，回溯是有方向地搜索。「力扣」上有一些简单的游戏类问题，解决它们有一定的难度，大家可以尝试一下。 51. N 皇后（困难）：其实就是全排列问题，注意设计清楚状态变量，在遍历的时候需要记住一些信息，空间换时间； 37. 解数独（困难）：思路同「N 皇后问题」； 488. 祖玛游戏（困难） 529. 扫雷游戏（困难）</p>
+<h1 id="背包问题"><a href="#背包问题" class="headerlink" title="背包问题"></a>背包问题</h1><ul>
+<li>01 背包<ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/target-sum/">目标和</a>：转化问题以后为 0-1 背包方案数问题。</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/partition-equal-subset-sum/">分割等和子集</a>：转化后为 0-1 背包可行性问题。</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/last-stone-weight-ii/">最后一块石头的重量 II</a>：转化后为 0-1 背包最小值问题。</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/ones-and-zeroes/">474. 一和零</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/profitable-schemes/">879. 盈利计划</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/toss-strange-coins/">1230. 抛掷硬币</a></li>
+</ul>
+</li>
+<li>完全背包<ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/coin-change/">零钱兑换</a>：完全背包最小值</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/perfect-squares/">完全平方数</a>：完全背包最小值</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/coin-change-2/">零钱兑换 II</a>：完全背包方案数</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/combination-sum-iv/">组合总和 Ⅳ</a>：考虑物品顺序的完全背包方案数。每个物品可以重复拿，有几种装满背包的方案？</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/form-largest-integer-with-digits-that-add-up-to-target/">1449. 数位成本和为目标值的最大数字</a></li>
+</ul>
+</li>
+<li>多维背包<ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/ones-and-zeroes/">01 字符构成最多的字符串</a>：多维费用的 0-1 背包最大值，两个背包大小：0 和 1 的数量</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/profitable-schemes/">盈利计划</a>：多维费用的 0-1 背包最大值</li>
+</ul>
+</li>
+<li>分组背包<ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/number-of-dice-rolls-with-target-sum/">掷骰子的 N 种方法</a>：每一组是一个骰子，每个骰子只能拿一个体积为 1 到 6 的物品</li>
+</ul>
+</li>
+</ul>
+<p>其他</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/coin-change/solution/bei-bao-wen-ti-zhi-01bei-bao-wen-ti-ke-pu-wen-ji-c/">背包问题之 01 背包问题（科普文，基础，背包九讲）</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/coin-change/solution/bei-bao-si-xiang-jie-jue-ling-qian-dui-huan-wen-2/">背包思想解决零钱兑换问题 I</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/coin-change-2/solution/bei-bao-si-xiang-jie-jue-ling-qian-dui-huan-wen-ti/">背包思想解决零钱兑换问题(逐步优化，多方法)</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/ones-and-zeroes/solution/01bei-bao-wen-ti-zhi-yi-he-ling-by-a-fei-8/">01 背包问题之一和零</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/last-stone-weight-ii/solution/dong-tai-gui-hua-jie-zui-hou-yi-kuai-shi-tou-de-zh/">01 背包问题之最后一块石头的重量[Pelican]</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/profitable-schemes/solution/bei-bao-wen-ti-zhi-ying-li-ji-hua-by-a-fei-8/">背包问题之盈利计划</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2020/08/20/yuque/%E7%AE%97%E6%B3%95/" data-id="cl3zp2b6n00291w7s2o3v3kxm" data-title="算法" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-yuque/数据库" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/08/20/yuque/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="article-date">
+  <time class="dt-published" datetime="2020-08-20T06:40:04.000Z" itemprop="datePublished">2020-08-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/08/20/yuque/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="保证数据不丢失"><a href="#保证数据不丢失" class="headerlink" title="保证数据不丢失"></a>保证数据不丢失</h2><p>日志先行，先写日志再写数据。<br>undolog → Buffer Pool → redolog → binlog → 磁盘</p>
+<h2 id="执行流程"><a href="#执行流程" class="headerlink" title="执行流程"></a>执行流程</h2><p><img src="https://cdn.nlark.com/yuque/0/2022/png/1982501/1652358240667-c25ac6fd-0f9e-43eb-bb45-fcf2612409de.png#clientId=u884495c1-aa9d-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=934&id=ud73e0110&margin=%5Bobject%20Object%5D&name=image.png&originHeight=2102&originWidth=1681&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=445832&status=done&style=none&taskId=ub049fd19-ab36-4558-b348-b2afbf9ea85&title=&width=747.1111111111111" alt="image.png"></p>
+<h2 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h2><p><img src="https://cdn.nlark.com/yuque/0/2022/png/1982501/1652351364798-810a18a6-dce3-4589-ae1e-5c461209c1b1.png?x-oss-process=image/watermark,type_d3F5LW1pY3JvaGVp,size_95,text_SGFuc29tZUJv,color_FFFFFF,shadow_50,t_80,g_se,x_10,y_10/resize,w_1687,limit_0#crop=0&crop=0&crop=1&crop=1&from=url&id=sGktt&margin=%5Bobject%20Object%5D&originHeight=893&originWidth=1687&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<h2 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h2><p><img src="https://cdn.nlark.com/yuque/0/2022/png/1982501/1652351448402-3b459ec3-3dfe-4010-bb8f-de35f8aac57b.png?x-oss-process=image/watermark,type_d3F5LW1pY3JvaGVp,size_78,text_SGFuc29tZUJv,color_FFFFFF,shadow_50,t_80,g_se,x_10,y_10/resize,w_1687,limit_0#crop=0&crop=0&crop=1&crop=1&from=url&id=xXm57&margin=%5Bobject%20Object%5D&originHeight=1123&originWidth=1687&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><p><img src="https://cdn.nlark.com/yuque/0/2022/png/1982501/1652351728448-80d7f1c1-8a77-4d51-b667-690ed58523be.png#clientId=ub6986eeb-fd5e-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=571&id=uf963d710&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1285&originWidth=3392&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=555383&status=done&style=none&taskId=u6d18537c-47a3-4094-89ed-7086c316339&title=&width=1507.5555555555557" alt="image.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2020/08/20/yuque/%E6%95%B0%E6%8D%AE%E5%BA%93/" data-id="cl3zp2b6e001w1w7sc2gv96ik" data-title="数据库" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-yuque/框架" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/08/20/yuque/%E6%A1%86%E6%9E%B6/" class="article-date">
+  <time class="dt-published" datetime="2020-08-20T06:37:47.000Z" itemprop="datePublished">2020-08-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/08/20/yuque/%E6%A1%86%E6%9E%B6/">框架</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2020/08/20/yuque/%E6%A1%86%E6%9E%B6/" data-id="cl3zp2b6e001x1w7s6qhm5d66" data-title="框架" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-yuque/知识汇总图" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/08/20/yuque/%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E5%9B%BE/" class="article-date">
+  <time class="dt-published" datetime="2020-08-20T06:12:47.000Z" itemprop="datePublished">2020-08-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/08/20/yuque/%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E5%9B%BE/">知识汇总图</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="https://www.yuque.com/attachments/yuque/0/2020/xmind.zip/1982501/1597904068520-f14189b6-f1ea-41a9-a49f-6bf62aaca94d.xmind.zip">知识点.xmind.zip</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2020/08/20/yuque/%E7%9F%A5%E8%AF%86%E6%B1%87%E6%80%BB%E5%9B%BE/" data-id="cl3zp2b6l00241w7s3k34gnfn" data-title="知识汇总图" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-yuque/JAVA数据结构整理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/07/29/yuque/JAVA%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%95%B4%E7%90%86/" class="article-date">
+  <time class="dt-published" datetime="2020-07-29T09:15:17.000Z" itemprop="datePublished">2020-07-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/07/29/yuque/JAVA%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%95%B4%E7%90%86/">JAVA数据结构整理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><img src="https://cdn.nlark.com/yuque/0/2020/svg/1982501/1596074259105-0c444612-fe6f-4276-b203-18c9a187b2a9.svg"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2020/07/29/yuque/JAVA%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%95%B4%E7%90%86/" data-id="cl3zp2b5r000k1w7s43012mzj" data-title="JAVA数据结构整理" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-yuque/技能图" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/07/28/yuque/%E6%8A%80%E8%83%BD%E5%9B%BE/" class="article-date">
+  <time class="dt-published" datetime="2020-07-28T01:49:51.000Z" itemprop="datePublished">2020-07-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/07/28/yuque/%E6%8A%80%E8%83%BD%E5%9B%BE/">技能图</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><img src="https://cdn.nlark.com/yuque/0/2020/png/1982501/1595901009953-908911cf-1ce7-4bfb-9a70-2cd9abcfbac7.png#align=left&display=inline&height=10066&margin=%5Bobject%20Object%5D&name=image.png&originHeight=10066&originWidth=3817&size=5818743&status=done&style=none&width=3817" alt="image.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2020/07/28/yuque/%E6%8A%80%E8%83%BD%E5%9B%BE/" data-id="cl3zp2b6c001t1w7s33nm0pzq" data-title="技能图" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/8/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/10/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%9F%BA%E7%A1%80/" rel="tag">Java基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8E%86/" rel="tag">简历</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Java%E5%9F%BA%E7%A1%80/" style="font-size: 20px;">Java基础</a> <a href="/tags/%E7%AE%80%E5%8E%86/" style="font-size: 10px;">简历</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/06/01/%E4%B8%AA%E4%BA%BA%E7%AE%80%E5%8E%86-%E5%BE%90%E5%8D%9A/">个人简历</a>
+          </li>
+        
+          <li>
+            <a href="/2022/06/01/yuque/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E7%9B%B8%E5%85%B3/">系统设计相关</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/15/yuque/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/15/yuque/%E9%97%AE%E9%A2%98%E4%BB%A5%E5%8F%8A%E6%96%B9%E6%A1%88/">问题以及方案</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/15/yuque/%E7%BC%93%E5%AD%98%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8F%8C%E5%86%99%E4%B8%8D%E4%B8%80%E8%87%B4/">缓存和数据库双写不一致</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

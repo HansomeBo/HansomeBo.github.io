@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>算法 | HandsomeBo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="https:&#x2F;&#x2F;wizardforcel.gitbooks.io&#x2F;the-art-of-programming-by-july&#x2F;content&#x2F;https:&#x2F;&#x2F;stomachache007.wordpress.com&#x2F;category&#x2F;blog&#x2F; 回溯题型一：排列、组合、子集相关问题提示：这部分练习可以帮助我们熟悉「回溯算法」的一些概念和通用的解题思路。解题的步骤是：先画图，再编码。去思考可以剪枝">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法">
+<meta property="og:url" content="http://handsomebo.com/2020/08/20/yuque/%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="HandsomeBo">
+<meta property="og:description" content="https:&#x2F;&#x2F;wizardforcel.gitbooks.io&#x2F;the-art-of-programming-by-july&#x2F;content&#x2F;https:&#x2F;&#x2F;stomachache007.wordpress.com&#x2F;category&#x2F;blog&#x2F; 回溯题型一：排列、组合、子集相关问题提示：这部分练习可以帮助我们熟悉「回溯算法」的一些概念和通用的解题思路。解题的步骤是：先画图，再编码。去思考可以剪枝">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-08-20T06:42:49.000Z">
+<meta property="article:modified_time" content="2022-06-04T09:49:47.271Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="HandsomeBo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">HandsomeBo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://handsomebo.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-yuque/算法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/08/20/yuque/%E7%AE%97%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2020-08-20T06:42:49.000Z" itemprop="datePublished">2020-08-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      算法
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="https://wizardforcel.gitbooks.io/the-art-of-programming-by-july/content/">https://wizardforcel.gitbooks.io/the-art-of-programming-by-july/content/</a><br><a target="_blank" rel="noopener" href="https://stomachache007.wordpress.com/category/blog/">https://stomachache007.wordpress.com/category/blog/</a></p>
+<h1 id="回溯"><a href="#回溯" class="headerlink" title="回溯"></a>回溯</h1><h4 id="题型一：排列、组合、子集相关问题"><a href="#题型一：排列、组合、子集相关问题" class="headerlink" title="题型一：排列、组合、子集相关问题"></a>题型一：排列、组合、子集相关问题</h4><p>提示：这部分练习可以帮助我们熟悉「回溯算法」的一些概念和通用的解题思路。解题的步骤是：先画图，再编码。去思考可以剪枝的条件， 为什么有的时候用 used 数组，有的时候设置搜索起点 begin 变量，理解状态变量设计的想法。 46. 全排列（中等） 47. 全排列 II（中等）：思考为什么造成了重复，如何在搜索之前就判断这一支会产生重复； 39. 组合总和（中等） 40. 组合总和 II（中等） 77. 组合（中等） 78. 子集（中等） 90. 子集 II（中等）：剪枝技巧同 47 题、39 题、40 题； 60. 第 k 个排列（中等）：利用了剪枝的思想，减去了大量枝叶，直接来到需要的叶子结点； 93. 复原 IP 地址（中等）</p>
+<h4 id="题型二：Flood-Fill"><a href="#题型二：Flood-Fill" class="headerlink" title="题型二：Flood Fill"></a>题型二：Flood Fill</h4><p>提示：Flood 是「洪水」的意思，Flood Fill 直译是「泛洪填充」的意思，体现了洪水能够从一点开始，迅速填满当前位置附近的地势低的区域。类似的应用还有：PS 软件中的「点一下把这一片区域的颜色都替换掉」，扫雷游戏「点一下打开一大片没有雷的区域」。<br>下面这几个问题，思想不难，但是初学的时候代码很不容易写对，并且也很难调试。我们的建议是多写几遍，忘记了就再写一次，参考规范的编写实现（设置 visited 数组，设置方向数组，抽取私有方法），把代码写对。 733. 图像渲染（Flood Fill，中等） 200. 岛屿数量（中等） 130. 被围绕的区域（中等） 79. 单词搜索（中等）<br>说明：以上问题都不建议修改输入数据，设置 visited 数组是标准的做法。可能会遇到参数很多，是不是都可以写成成员变量的问题，面试中拿不准的记得问一下面试官</p>
+<h4 id="题型三：字符串中的回溯问题"><a href="#题型三：字符串中的回溯问题" class="headerlink" title="题型三：字符串中的回溯问题"></a>题型三：字符串中的回溯问题</h4><p>提示：字符串的问题的特殊之处在于，字符串的拼接生成新对象，因此在这一类问题上没有显示「回溯」的过程，但是如果使用 StringBuilder 拼接字符串就另当别论。<br>在这里把它们单独作为一个题型，是希望朋友们能够注意到这个非常细节的地方。 17. 电话号码的字母组合（中等），题解； 784. 字母大小写全排列（中等）； 22. 括号生成（中等） ：这道题广度优先遍历也很好写，可以通过这个问题理解一下为什么回溯算法都是深度优先遍历，并且都用递归来写。<br>题型四：游戏问题<br>回溯算法是早期简单的人工智能，有些教程把回溯叫做暴力搜索，但回溯没有那么暴力，回溯是有方向地搜索。「力扣」上有一些简单的游戏类问题，解决它们有一定的难度，大家可以尝试一下。 51. N 皇后（困难）：其实就是全排列问题，注意设计清楚状态变量，在遍历的时候需要记住一些信息，空间换时间； 37. 解数独（困难）：思路同「N 皇后问题」； 488. 祖玛游戏（困难） 529. 扫雷游戏（困难）</p>
+<h1 id="背包问题"><a href="#背包问题" class="headerlink" title="背包问题"></a>背包问题</h1><ul>
+<li>01 背包<ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/target-sum/">目标和</a>：转化问题以后为 0-1 背包方案数问题。</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/partition-equal-subset-sum/">分割等和子集</a>：转化后为 0-1 背包可行性问题。</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/last-stone-weight-ii/">最后一块石头的重量 II</a>：转化后为 0-1 背包最小值问题。</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/ones-and-zeroes/">474. 一和零</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/profitable-schemes/">879. 盈利计划</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/toss-strange-coins/">1230. 抛掷硬币</a></li>
+</ul>
+</li>
+<li>完全背包<ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/coin-change/">零钱兑换</a>：完全背包最小值</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/perfect-squares/">完全平方数</a>：完全背包最小值</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/coin-change-2/">零钱兑换 II</a>：完全背包方案数</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/combination-sum-iv/">组合总和 Ⅳ</a>：考虑物品顺序的完全背包方案数。每个物品可以重复拿，有几种装满背包的方案？</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/form-largest-integer-with-digits-that-add-up-to-target/">1449. 数位成本和为目标值的最大数字</a></li>
+</ul>
+</li>
+<li>多维背包<ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/ones-and-zeroes/">01 字符构成最多的字符串</a>：多维费用的 0-1 背包最大值，两个背包大小：0 和 1 的数量</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/profitable-schemes/">盈利计划</a>：多维费用的 0-1 背包最大值</li>
+</ul>
+</li>
+<li>分组背包<ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/number-of-dice-rolls-with-target-sum/">掷骰子的 N 种方法</a>：每一组是一个骰子，每个骰子只能拿一个体积为 1 到 6 的物品</li>
+</ul>
+</li>
+</ul>
+<p>其他</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/coin-change/solution/bei-bao-wen-ti-zhi-01bei-bao-wen-ti-ke-pu-wen-ji-c/">背包问题之 01 背包问题（科普文，基础，背包九讲）</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/coin-change/solution/bei-bao-si-xiang-jie-jue-ling-qian-dui-huan-wen-2/">背包思想解决零钱兑换问题 I</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/coin-change-2/solution/bei-bao-si-xiang-jie-jue-ling-qian-dui-huan-wen-ti/">背包思想解决零钱兑换问题(逐步优化，多方法)</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/ones-and-zeroes/solution/01bei-bao-wen-ti-zhi-yi-he-ling-by-a-fei-8/">01 背包问题之一和零</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/last-stone-weight-ii/solution/dong-tai-gui-hua-jie-zui-hou-yi-kuai-shi-tou-de-zh/">01 背包问题之最后一块石头的重量[Pelican]</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/profitable-schemes/solution/bei-bao-wen-ti-zhi-ying-li-ji-hua-by-a-fei-8/">背包问题之盈利计划</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2020/08/20/yuque/%E7%AE%97%E6%B3%95/" data-id="cl3zp2b6n00291w7s2o3v3kxm" data-title="算法" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/08/20/yuque/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          系统设计
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/08/20/yuque/%E6%95%B0%E6%8D%AE%E5%BA%93/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">数据库</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%9F%BA%E7%A1%80/" rel="tag">Java基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8E%86/" rel="tag">简历</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Java%E5%9F%BA%E7%A1%80/" style="font-size: 20px;">Java基础</a> <a href="/tags/%E7%AE%80%E5%8E%86/" style="font-size: 10px;">简历</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/06/01/%E4%B8%AA%E4%BA%BA%E7%AE%80%E5%8E%86-%E5%BE%90%E5%8D%9A/">个人简历</a>
+          </li>
+        
+          <li>
+            <a href="/2022/06/01/yuque/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E7%9B%B8%E5%85%B3/">系统设计相关</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/15/yuque/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/15/yuque/%E9%97%AE%E9%A2%98%E4%BB%A5%E5%8F%8A%E6%96%B9%E6%A1%88/">问题以及方案</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/15/yuque/%E7%BC%93%E5%AD%98%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8F%8C%E5%86%99%E4%B8%8D%E4%B8%80%E8%87%B4/">缓存和数据库双写不一致</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

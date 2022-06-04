@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>线程池 | HandsomeBo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="重要属性corePoolSize 核心线程数maxmumPoolSizekeepLiveTimeQueue 线程数计算方法   方案 问题    Ncpu&#x3D;number of CPUsUcpu&#x3D;target CPU utilization,0≤Ucpu≤1CW&#x3D;ratio of wait time to compute timeThe optimal pool siz">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线程池">
+<meta property="og:url" content="http://handsomebo.com/2020/08/20/yuque/%E7%BA%BF%E7%A8%8B%E6%B1%A0/index.html">
+<meta property="og:site_name" content="HandsomeBo">
+<meta property="og:description" content="重要属性corePoolSize 核心线程数maxmumPoolSizekeepLiveTimeQueue 线程数计算方法   方案 问题    Ncpu&#x3D;number of CPUsUcpu&#x3D;target CPU utilization,0≤Ucpu≤1CW&#x3D;ratio of wait time to compute timeThe optimal pool siz">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/1982501/1651990382654-47aaa0a6-bcd1-441f-a01a-7ad973356493.png#clientId=u1f8d95aa-51fb-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=1417&id=uc0f099f2&margin=%5Bobject%20Object%5D&name=image.png&originHeight=2126&originWidth=2103&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=253536&status=done&style=none&taskId=u1e9536fe-cf1a-4ae8-89af-68a2e6b2604&title=&width=1402">
+<meta property="article:published_time" content="2020-08-20T06:46:29.000Z">
+<meta property="article:modified_time" content="2022-06-04T09:49:47.270Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2022/png/1982501/1651990382654-47aaa0a6-bcd1-441f-a01a-7ad973356493.png#clientId=u1f8d95aa-51fb-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=1417&id=uc0f099f2&margin=%5Bobject%20Object%5D&name=image.png&originHeight=2126&originWidth=2103&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=253536&status=done&style=none&taskId=u1e9536fe-cf1a-4ae8-89af-68a2e6b2604&title=&width=1402">
+  
+    <link rel="alternate" href="/atom.xml" title="HandsomeBo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">HandsomeBo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://handsomebo.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-yuque/线程池" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/08/20/yuque/%E7%BA%BF%E7%A8%8B%E6%B1%A0/" class="article-date">
+  <time class="dt-published" datetime="2020-08-20T06:46:29.000Z" itemprop="datePublished">2020-08-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      线程池
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="重要属性"><a href="#重要属性" class="headerlink" title="重要属性"></a>重要属性</h2><p>corePoolSize 核心线程数<br>maxmumPoolSize<br>keepLiveTime<br>Queue<br><img src="https://cdn.nlark.com/yuque/0/2022/png/1982501/1651990382654-47aaa0a6-bcd1-441f-a01a-7ad973356493.png#clientId=u1f8d95aa-51fb-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=1417&id=uc0f099f2&margin=%5Bobject%20Object%5D&name=image.png&originHeight=2126&originWidth=2103&originalType=binary%E2%88%B6=1&rotation=0&showTitle=false&size=253536&status=done&style=none&taskId=u1e9536fe-cf1a-4ae8-89af-68a2e6b2604&title=&width=1402" alt="image.png"></p>
+<h2 id="线程数计算方法"><a href="#线程数计算方法" class="headerlink" title="线程数计算方法"></a>线程数计算方法</h2><table>
+<thead>
+<tr>
+<th>方案</th>
+<th>问题</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><em>Ncpu</em>&#x3D;<em>number</em> <em>of</em> <em>CPUsUcpu</em>&#x3D;<em>target</em> <em>CPU</em> <em>utilization</em>,0≤<em>Ucpu</em>≤1<em>CW</em>&#x3D;<em>ratio</em> <em>of</em> <em>wait</em> <em>time</em> <em>to</em> <em>compute</em> <em>timeThe</em> <em>optimal</em> <em>pool</em> <em>size</em> <em>for</em> <em>keeping</em> <em>the</em> <em>processors</em> <em>at</em> <em>the</em> <em>desired</em> <em>utilization</em> <em>isNthreads</em>&#x3D;<em>Ncpu</em>∗<em>Ucpu</em>∗(1+<em>CW</em>)</td>
+<td>出自《Java 并发编程实践》</td>
+</tr>
+<tr>
+<td>该方案偏理论化。首先，线程计算的时间和等待的时间要如何确定呢？这个在实际开发中很难得到确切的值。另外计算出来的线程个数逼近线程实体的个数，Java 线程池可以利用线程切换的方式最大程度利用 CPU 核数，这样计算出来的结果是非常偏离业务场景的</td>
+<td></td>
+</tr>
+<tr>
+<td><em>coreSize</em>&#x3D;2∗<em>NcpumaxSize</em>&#x3D;25∗<em>Ncpu</em></td>
+<td>没有考虑应用中往往使用多个线程池的情况，统一的配置明显不符合多样的业务场景。</td>
+</tr>
+<tr>
+<td><em>coreSize</em>&#x3D;<em>tps</em>∗<em>timemaxSize</em>&#x3D;<em>tps</em>∗<em>time</em>∗(1.7∼2)</td>
+<td>这种计算方式，考虑到了业务场景，但是该模型是在假定流量平均分布得出的。业务场景的流量往往是随机的，这样不符合真实情况。</td>
+</tr>
+</tbody></table>
+<p>tomcat 是请求连接数默认 200，如果是 IO 密集型，那么在 CPU 调度其他线程时，IO 任务还可以处理，这样更多线程数能同时处理更多 IO 任务，CPU 密集型就没办法了，所以线程都要争夺 CPU 资源，一般设置 CPU 核心数+1 就行了。</p>
+<p>一个 CPU 核都想跑满 100%，理论 线程数&#x3D; (IO 时间+ CPU 计算时间）&#x2F; CPU 计算时间；如果 CPU 密集型 的 IO 时间 ≈0，此时为 CPU 核数；网上流传的 IO 密集型认为 IO 时间 ≈CPU 时间，此时为 CPU 核数*2；常规的 Web 服务下 IO 时间远大于 CPU 时间，所以 dubbo 设置为 200，这个我猜主要是参考了业界老油条 Tomcat 的默认配置，不同场景下可能有不小的优化空间。</p>
+<h2 id="动态化线程池"><a href="#动态化线程池" class="headerlink" title="动态化线程池"></a>动态化线程池</h2><p>1.<strong>简化线程池配置</strong>：线程池构造参数有 8 个，但是最核心的是 3 个：corePoolSize、maximumPoolSize，workQueue，它们最大程度地决定了线程池的任务分配和线程分配策略。考虑到在实际应用中我们获取并发性的场景主要是两种：（1）并行执行子任务，提高响应速度。这种情况下，应该使用同步队列，没有什么任务应该被缓存下来，而是应该立即执行。（2）并行执行大批次任务，提升吞吐量。这种情况下，应该使用有界队列，使用队列去缓冲大批量的任务，队列容量必须声明，防止任务无限制堆积。所以线程池只需要提供这三个关键参数的配置，并且提供两种队列的选择，就可以满足绝大多数的业务需求，Less is More。 2.<strong>参数可动态修改</strong>：为了解决参数不好配，修改参数成本高等问题。在 Java 线程池留有高扩展性的基础上，封装线程池，允许线程池监听同步外部的消息，根据消息进行修改配置。将线程池的配置放置在平台侧，允许开发同学简单的查看、修改线程池配置。 3.<strong>增加线程池监控</strong>：对某事物缺乏状态的观测，就对其改进无从下手。在线程池执行任务的生命周期添加监控能力，帮助开发同学了解线程池状态。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2020/08/20/yuque/%E7%BA%BF%E7%A8%8B%E6%B1%A0/" data-id="cl3zp2b6p002e1w7s5ey2b12c" data-title="线程池" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/08/20/yuque/%E5%85%B6%E4%BB%96/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          其他
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/08/20/yuque/%E9%94%81/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">锁</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%9F%BA%E7%A1%80/" rel="tag">Java基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8E%86/" rel="tag">简历</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Java%E5%9F%BA%E7%A1%80/" style="font-size: 20px;">Java基础</a> <a href="/tags/%E7%AE%80%E5%8E%86/" style="font-size: 10px;">简历</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/06/01/%E4%B8%AA%E4%BA%BA%E7%AE%80%E5%8E%86-%E5%BE%90%E5%8D%9A/">个人简历</a>
+          </li>
+        
+          <li>
+            <a href="/2022/06/01/yuque/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E7%9B%B8%E5%85%B3/">系统设计相关</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/15/yuque/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/15/yuque/%E9%97%AE%E9%A2%98%E4%BB%A5%E5%8F%8A%E6%96%B9%E6%A1%88/">问题以及方案</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/15/yuque/%E7%BC%93%E5%AD%98%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8F%8C%E5%86%99%E4%B8%8D%E4%B8%80%E8%87%B4/">缓存和数据库双写不一致</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
