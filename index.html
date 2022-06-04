@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>HandsomeBo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="HandsomeBo">
+<meta property="og:url" content="http://handsomebo.com/index.html">
+<meta property="og:site_name" content="HandsomeBo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="HandsomeBo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">HandsomeBo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://handsomebo.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-集合" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/06/04/%E9%9B%86%E5%90%88/" class="article-date">
+  <time class="dt-published" datetime="2022-06-04T08:26:25.881Z" itemprop="datePublished">2022-06-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <table>
+<thead>
+<tr>
+<th align="center"><a target="_blank" rel="noopener" href="https://www.yuque.com/hansomebo/uav9dd/xfgyi9">Map</a></th>
+<th>集合</th>
+<th>数据结构</th>
+<th>线程安全</th>
+<th>应用场景</th>
+<th>顺序</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"></td>
+<td>HashMap</td>
+<td>1.7 数组 + 链表</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="center">1.8 数组 + 链表 + 红黑树</td>
+<td>不安全</td>
+<td></td>
+<td>无序</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td><a target="_blank" rel="noopener" href="https://www.yuque.com/hansomebo/uav9dd/iiomcz">ConCurrentHashMap</a></td>
+<td>同HashMap</td>
+<td>安全</td>
+<td></td>
+<td>无序</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td>HashTable</td>
+<td>同HashMap</td>
+<td>安全sycronized</td>
+<td>线程安全</td>
+<td></td>
+</tr>
+<tr>
+<td align="center">效率低</td>
+<td>无序</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td>LinkedHashMap</td>
+<td>HashMap + 双向链表</td>
+<td>不安全</td>
+<td></td>
+<td>基于插入顺序</td>
+</tr>
+<tr>
+<td align="center">和访问顺序</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="center"></td>
+<td>TreeMap</td>
+<td>红黑树</td>
+<td>不安全</td>
+<td></td>
+<td>有序</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>List | ArrayList | 数组 | 不安全 | 读多写少 | 无序 |<br>|  | Vector | 数组 | 安全<br>sycronized | 线程安全<br>效率低 | 无序 |<br>|  | LinkedList | 双向链表 | 不安全 | 读少写多 | 无序 |<br>|  | CopyOnWriteList | 数组 | 安全 | 效率低<br>耗内存 |  |<br>| Set | HashSet | HashMap | 不安全 |  | 无序 |<br>|  | TreeSet | 红黑树 | 不安全 |  | 有序 |<br>|  | LinkedHashSet | HashMap + 双向链表 | 不安全 |  | 无序 |<br>|  | CopyOnWriteArraySet |  | 安全 |  |  |</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2022/06/04/%E9%9B%86%E5%90%88/" data-id="cl3zm33vo0001ja7s742r8ee9" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Object" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/06/04/Object/" class="article-date">
+  <time class="dt-published" datetime="2022-06-04T08:25:38.461Z" itemprop="datePublished">2022-06-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>为什么wait和notify方法在object中</p>
+<blockquote>
+<p><strong>wait和notify需要在synchronized同步方法中才能执行，而synchronized加锁的是对象的markword指向的moniter对象，每个对象的对象头markword中保留了锁标志位和指向monitor对象的起始地址。每个对象都可以上锁，所以需要在object中，而不是thread中。</strong></p>
+</blockquote>
+<ol>
+<li><p>wait 和 notify 不仅仅是普通方法或同步工具，更重要的是它们是 <strong>Java 中两个线程之间的通信机制</strong>。对语言设计者而言, 如果不能通过 Java 关键字(例如 synchronized)实现通信此机制，同时又要确保这个机制对每个对象可用, 那么 Object 类则是的合理的声明位置。记住<strong>同步</strong>和<strong>等待通知</strong>是两个不同的领域，不要把它们看成是相同的或相关的。同步是提供互斥并确保 Java 类的线程安全，而 <strong>wait 和 notify 是两个线程之间的通信机制</strong>。</p>
+</li>
+<li><p><strong>每个对象都可上锁</strong>，这是在 Object 类而不是 Thread 类中声明 wait 和 notify 的另一个原因。</p>
+</li>
+<li><p>在 Java 中，为了进入代码的临界区，线程需要锁定并等待锁，他们不知道哪些线程持有锁，而只是知道锁被某个线程持有， 并且需要等待以取得锁, 而不是去了解哪个线程在同步块内，并请求它们释放锁。</p>
+</li>
+<li><p>Java 是基于 Hoare 的监视器的思想(<a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/...)%E3%80%82%E5%9C%A8Java%E4%B8%AD%EF%BC%8C%E6%89%80%E6%9C%89%E5%AF%B9%E8%B1%A1%E9%83%BD%E6%9C%89%E4%B8%80%E4%B8%AA%E7%9B%91%E8%A7%86%E5%99%A8%E3%80%82">http://en.wikipedia.org/wiki/...)。在Java中，所有对象都有一个监视器。</a></p>
+</li>
+</ol>
+<p>线程在监视器上等待，为执行等待，我们需要2个参数：</p>
+<ul>
+<li>一个线程</li>
+<li>一个监视器(任何对象)</li>
+</ul>
+<p>在 Java 设计中，线程不能被指定，它总是运行当前代码的线程。但是，我们可以指定监视器(这是我们称之为等待的对象)。这是一个很好的设计，因为如果我们可以让任何其他线程在所需的监视器上等待，这将导致“入侵”，影响线程执行顺序，导致在设计并发程序时会遇到困难。请记住，在 Java 中，所有在另一个线程的执行中造成入侵的操作都被弃用了(例如 Thread.stop 方法)。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2022/06/04/Object/" data-id="cl3zm33vq0002ja7s4dutdpkx" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-异常" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/06/04/%E5%BC%82%E5%B8%B8/" class="article-date">
+  <time class="dt-published" datetime="2022-06-04T08:03:12.999Z" itemprop="datePublished">2022-06-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><img src="https://cdn.nlark.com/yuque/0/2021/jpeg/1982501/1620789035739-0afcecea-acd3-46ad-ab90-1dd26a7fe21a.jpeg">## 规范</p>
+<ol>
+<li>尽量不要捕获或者抛出通用异常，而是使用特定异常。</li>
+<li>不要生吞异常。这样会使程序发生异常时难以定位。</li>
+<li>不要对大段代码使用try-catch，也不要频繁使用。<ol>
+<li>try-catch代码段会产生额外的性能开销</li>
+<li>每次抛出异常，JVM都会对当前栈进行快照，性能开销比较重</li>
+</ol>
+</li>
+<li>不要使用printStackTrace()打印异常<ol>
+<li>这个方法会输出到standard error stream，复杂的系统中，这不是一个合适的输出选项</li>
+</ol>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2022/06/04/%E5%BC%82%E5%B8%B8/" data-id="cl3zl9h850000ja7sfzby7n8i" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/06/04/hello-world/" class="article-date">
+  <time class="dt-published" datetime="2022-06-04T05:21:28.021Z" itemprop="datePublished">2022-06-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/06/04/hello-world/">Hello World</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2022/06/04/hello-world/" data-id="cl3zgynjz0000ma7s4yesgyu2" data-title="Hello World" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-个人简历-徐博" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2014/11/01/%E4%B8%AA%E4%BA%BA%E7%AE%80%E5%8E%86-%E5%BE%90%E5%8D%9A/" class="article-date">
+  <time class="dt-published" datetime="2014-11-01T12:10:33.000Z" itemprop="datePublished">2014-11-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2014/11/01/%E4%B8%AA%E4%BA%BA%E7%AE%80%E5%8E%86-%E5%BE%90%E5%8D%9A/">个人简历</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>| <img src="https://cdn.nlark.com/yuque/0/2022/png/1982501/1654254000946-da016aa9-2f2d-4442-838a-24e7afe679a9.png#clientId=ueb42f994-ba41-4&crop=0&crop=0&crop=1&crop=1&from=ui&height=131&id=ub41e6ffc&margin=%5Bobject%20Object%5D&name=head3.png&originHeight=483&originWidth=387&originalType=binary&ratio=1&rotation=0&showTitle=false&size=323346&status=done&style=none&taskId=ucb1d64da-a023-433d-a437-21efe8aa9a7&title=&width=105" alt="head3.png"> | </p>
+<ul>
+<li>徐博｜男｜1994 </li>
+<li>工作年限 5年｜Base 北京</li>
+<li>手机 18844063961｜邮箱 <a href="mailto:&#104;&#x61;&#110;&#x73;&#111;&#109;&#x65;&#x62;&#111;&#x40;&#113;&#113;&#x2e;&#x63;&#111;&#x6d;">&#104;&#x61;&#110;&#x73;&#111;&#109;&#x65;&#x62;&#111;&#x40;&#113;&#113;&#x2e;&#x63;&#111;&#x6d;</a>｜微信 hansomebo<br> |<br>| — | — |</li>
+</ul>
+<p><strong>技能清单</strong></p>
+<ul>
+<li>Java基础、微服务、缓存、消息队列、数据库</li>
+<li>分布式事务、网关路由、熔断降级、负载均衡、Service Mesh</li>
+<li>JVM调优、QPS调优、接口幂等、柔性事务</li>
+</ul>
+<hr>
+<p><strong>工作经历</strong><br><strong>美团 ｜Java后端｜2021.02 ~ 2022.04</strong><br>技术：从0到1搭建新系统，技术选型与开发，技术说明文档与对接文档<br>业务：数据流量监控，组件、类信息聚集监控追踪，APP集成任务流程调度，APP迭代管控<br><strong>首金金融｜Java后端｜ 2017.08 ~ 2021.02</strong><br>技术： 单体服务 → 微服务转型，系统设计、技术方案选型和落地，公共服务搭建、代码Review<br>业务： 信贷资产交易系统、产品、费用、任务调度、对账等系统<br><strong>东方国信｜实习生｜2016.08 ~ 2017.06</strong></p>
+<hr>
+<p><strong>项目经历</strong><br><strong>APP中心｜系统设计&amp;开发｜美团</strong><br>技术：	SpringBoot、异步消息、分布式缓存、ElasticSearch全文检索<br>描述：	全平台APP数据监控，组件、类数据的聚合，统一化接口对接全平台系统<br>业绩：	推进平台数据统一，组件、类相关信息责任信息统一，方便监控追踪<br><strong>信贷交易系统｜开发组长&amp;系统设计｜首金</strong><br>技术：	SpringCloud、Eureka、Config、Hystrix、Ribbon、ZipKin、Monitor<br>        MySQL、TCC、Redis、RabbitMQ<br>描述：	分布式事务，自研开发TCC保证数据一致<br>        账户中心，优化热点账户，保证账户资金不错帐，提升海量明细查询速度<br>业绩：	资产端单体服务到微服务架构转型，提高交易并发处理能力，异常自治理能力，快速迭代更新能力<br><strong>其他项目</strong><br>分布式任务调度系统：定时任务灵活配置、任务分批、分步<br>交易对账系统：实时对账、离线T+1对账<br>文本分析系统：全文检索、文本数据结构化处理</p>
+<hr>
+<p><strong>教育经历</strong><br><strong>长春理工大学｜本科｜软件工程｜2013 ~ 2017</strong></p>
+<ul>
+<li>参加大学生创业比赛，大学生兼职项目，创业比赛三等奖</li>
+<li>阿里云服务器部署，校内三千用户注册</li>
+<li>英语社团和轮滑社团校区负责人</li>
+</ul>
+<hr>
+<p><strong>荣誉奖项</strong><br>首金年度最佳员工<br>大学生创业比赛三等奖</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://handsomebo.com/2014/11/01/%E4%B8%AA%E4%BA%BA%E7%AE%80%E5%8E%86-%E5%BE%90%E5%8D%9A/" data-id="cl3zh4t310001ma7s92lhblmm" data-title="个人简历" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%80%E5%8E%86/" rel="tag">简历</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8E%86/" rel="tag">简历</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/%E7%AE%80%E5%8E%86/" style="font-size: 10px;">简历</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/06/04/%E9%9B%86%E5%90%88/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/06/04/Object/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/06/04/%E5%BC%82%E5%B8%B8/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/06/04/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2014/11/01/%E4%B8%AA%E4%BA%BA%E7%AE%80%E5%8E%86-%E5%BE%90%E5%8D%9A/">个人简历</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
