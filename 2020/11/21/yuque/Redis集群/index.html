@@ -1,106 +1,186 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  
-  
-  <title>Redis集群 | HandsomeBo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="技术点:gossip 通信协议,hash solt 算法 一致性 Hash一致性 hash 算法  一致性 hash 需要再整理一篇文章  集群方案 使用 zookeeper 进行中心化的数据管理，所有元数据存放在 zookeeper 中 时效性好 健壮性降低，当 zookeeper 挂掉后集群全部失效   使用 master 进行无中心化的数据管理，每个 master 都存储一份元数据 元数据更">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Redis集群">
-<meta property="og:url" content="http://handsomebo.com/2020/11/21/yuque/Redis%E9%9B%86%E7%BE%A4/index.html">
-<meta property="og:site_name" content="HandsomeBo">
-<meta property="og:description" content="技术点:gossip 通信协议,hash solt 算法 一致性 Hash一致性 hash 算法  一致性 hash 需要再整理一篇文章  集群方案 使用 zookeeper 进行中心化的数据管理，所有元数据存放在 zookeeper 中 时效性好 健壮性降低，当 zookeeper 挂掉后集群全部失效   使用 master 进行无中心化的数据管理，每个 master 都存储一份元数据 元数据更">
-<meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-11-21T03:11:50.000Z">
-<meta property="article:modified_time" content="2022-06-04T09:49:47.262Z">
-<meta property="article:author" content="John Doe">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="HandsomeBo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
+  <head>
+      <script>
+  var _hmt = _hmt || []
+  ;(function() {
+    var hm = document.createElement('script')
+    hm.src = 'https://hm.baidu.com/hm.js?5a0acc897fd96474a2c8f4deac84611a'
+    var s = document.getElementsByTagName('script')[0]
+    s.parentNode.insertBefore(hm, s)
+  })()
+</script> 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
     
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
-
-  
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
+    <title>
+      Redis集群 - HandsomeBo
+    </title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
     
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+<link rel="stylesheet" href="/style/style.css">
 
-  
-<meta name="generator" content="Hexo 6.2.0"></head>
-
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">HandsomeBo</a>
-      </h1>
-      
+  <meta name="generator" content="Hexo 6.2.0"></head>
+  <body>
+    <canvas id='pagemap'></canvas>
+    
+    <div id="post-toc" class="animated hiddenToc hide">
+      <span class="title">Toc</span>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E8%87%B4%E6%80%A7-Hash"><span class="toc-text">一致性 Hash</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E6%96%B9%E6%A1%88"><span class="toc-text">集群方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8A%82%E7%82%B9%E9%97%B4%E7%9A%84%E5%86%85%E9%83%A8%E9%80%9A%E4%BF%A1%E6%9C%BA%E5%88%B6"><span class="toc-text">节点间的内部通信机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%A2%E5%90%91%E9%9B%86%E7%BE%A4%E7%9A%84-jedis-%E5%86%85%E9%83%A8%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-text">面向集群的 jedis 内部实现原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E5%8F%AF%E7%94%A8%E6%80%A7%E4%B8%8E%E4%B8%BB%E5%A4%87%E5%88%87%E6%8D%A2%E5%8E%9F%E7%90%86"><span class="toc-text">高可用性与主备切换原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E4%BC%98%E5%8C%96"><span class="toc-text">集群优化</span></a></li></ol>
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://handsomebo.com"></form>
+    
+    <div id="fixed-menu-wrap">
+      <span class="icon-toc menu-reset">Toc</span>
+      <span class="iconfont icon-arrowup menu-reset"></span>
+    </div>
+    <div id="fixed-menu">
+      <span class="iconfont icon-menu-"></span>
+    </div>
+    <div id="progress">
+      <div class="line"></div>
+    </div>
+    <div id="search-shade" class="animated hiddenSearch hide">
+      <div class="input-wrap">
+        <input type="text" placeholder="Search" />
+        <span class="iconfont icon-close"></span>
+      </div>
+      <div class="search-result">
+        <div class="meta">
+          <span><b id="result-count">0</b> results found</span>
+          <img src="/images/logo.jpeg" />
+        </div>
+        <ul id="result-box"></ul>
       </div>
     </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main"><article id="post-yuque/Redis集群" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/11/21/yuque/Redis%E9%9B%86%E7%BE%A4/" class="article-date">
-  <time class="dt-published" datetime="2020-11-21T03:11:50.000Z" itemprop="datePublished">2020-11-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+    <div id="menu-mask" class="animated hideMenuMask hide">
+      <span class="iconfont icon-close"></span>
+      <div class="nav">
         
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      Redis集群
-    </h1>
-  
+        <a href="/" class="">
+          Home
+        </a>
+        
+        <a href="/archives" class="">
+          Archives
+        </a>
+        
+        <a href="/categories" class="">
+          Categories
+        </a>
+        
+        <a href="/tags" class="">
+          Tags
+        </a>
+        
+        <a href="/friends" class="">
+          Friends
+        </a>
+        
+        <a href="/about" class="">
+          About
+        </a>
+        
+      </div>
+    </div>
+    <div id="header">
+      <div class="intro">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <div class="author">BOBO</div>
+      </div>
+      <div class="nav">
+        <span class="iconfont icon-menu menu-icon"></span>
+      </div>
+    </div>
+    <div id="side" class="animated bounceInLeft">
+      <div class="shrink">
+        <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        <span class="iconfont icon-menu toggle-icon"></span>
+      </div>
+      <div class="magnify">
+        <div class="about">
+          <div class="author">BOBO</div>
+          <a href="/" class="logo" style="background-image: url('/images/logo.jpeg')"></a>
+        </div>
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
+        <div class="nav">
+          
+          <a href="/" class="">
+            Home
+          </a>
+          
+          <a href="/archives" class="">
+            Archives
+          </a>
+          
+          <a href="/categories" class="">
+            Categories
+          </a>
+          
+          <a href="/tags" class="">
+            Tags
+          </a>
+          
+          <a href="/friends" class="">
+            Friends
+          </a>
+          
+          <a href="/about" class="">
+            About
+          </a>
+          
+        </div>
+        <div class="bottom">
+          <div class="follow">
+            
+            <a href="https://github.com/HansomeBo" target="_block">
+              <span class="iconfont icon-github"></span>
+            </a>
+             
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="container">
+      <div class="main animated bounceInRight delay-0.7s">
+        <article class="post-entry">
+    <div class="header">
       
-        <p>技术点:gossip 通信协议,hash solt 算法</p>
-<h2 id="一致性-Hash"><a href="#一致性-Hash" class="headerlink" title="一致性 Hash"></a>一致性 Hash</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/129049724">一致性 hash 算法</a></p>
+      <div class="title">Redis集群</div>
+      <div class="meta">
+        <span class="item">
+          <span class="iconfont icon-time-circle"></span>
+          <span>2020/11/21</span>
+        </span>
+
+        
+
+         
+        <span class="item">
+          <span class="iconfont icon-folder"></span>
+          <span>
+              
+                
+                  <a href="/categories/Redis">Redis</a>
+                
+              
+          </span>
+        </span>
+        
+        
+        
+      </div>
+      <div>
+      </div>
+    </div>
+    <html><head></head><body><p>技术点:gossip 通信协议,hash solt 算法</p>
+<h2 id="一致性-Hash">一致性 Hash<a class="post-anchor" href="#一致性-Hash"></a></h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/129049724">一致性 hash 算法</a></p>
 <blockquote>
 <p>一致性 hash 需要再整理一篇文章</p>
 </blockquote>
-<h2 id="集群方案"><a href="#集群方案" class="headerlink" title="集群方案"></a>集群方案</h2><ol>
+<h2 id="集群方案">集群方案<a class="post-anchor" href="#集群方案"></a></h2><ol>
 <li>使用 zookeeper 进行中心化的数据管理，所有元数据存放在 zookeeper 中<ol>
 <li>时效性好</li>
 <li>健壮性降低，当 zookeeper 挂掉后集群全部失效</li>
@@ -112,158 +192,120 @@
 </ol>
 </li>
 </ol>
-<h2 id="节点间的内部通信机制"><a href="#节点间的内部通信机制" class="headerlink" title="节点间的内部通信机制"></a>节点间的内部通信机制</h2><p>1、基础通信原理<br>（1）redis cluster 节点间采取 gossip 协议进行通信<br>跟集中式不同，不是将集群元数据（节点信息，故障，等等）集中存储在某个节点上，而是互相之间不断通信，保持整个集群所有节点的数据是完整的<br>（2）10000 端口<br>每个节点都有一个专门用于节点间通信的端口，就是自己提供服务的端口号+10000，比如 7001，那么用于节点间通信的就是 17001 端口<br>每隔节点每隔一段时间都会往另外几个节点发送 ping 消息，同时其他几点接收到 ping 之后返回 pong<br>（3）交换的信息<br>故障信息，节点的增加和移除，hash slot 信息，等等<br>2、gossip 协议<br>gossip 协议包含多种消息，包括 ping，pong，meet，fail，等等<br>meet: 某个节点发送 meet 给新加入的节点，让新节点加入集群中，然后新节点就会开始与其他节点进行通信<br>redis-trib.rb add-node<br>其实内部就是发送了一个 gossip meet 消息，给新加入的节点，通知那个节点去加入我们的集群<br>ping: 每个节点都会频繁给其他节点发送 ping，其中包含自己的状态还有自己维护的集群元数据，互相通过 ping 交换元数据<br>每个节点每秒都会频繁发送 ping 给其他的集群，ping，频繁的互相之间交换数据，互相进行元数据的更新<br>pong: 返回 ping 和 meet，包含自己的状态和其他信息，也可以用于信息广播和更新<br>fail: 某个节点判断另一个节点 fail 之后，就发送 fail 给其他节点，通知其他节点，指定的节点宕机了<br>3、ping 消息深入<br>ping 很频繁，而且要携带一些元数据，所以可能会加重网络负担<br>每个节点每秒会执行 10 次 ping，每次会选择 5 个最久没有通信的其他节点<br>当然如果发现某个节点通信延时达到了 cluster_node_timeout &#x2F; 2，那么立即发送 ping，避免数据交换延时过长，落后的时间太长了<br>比如说，两个节点之间都 10 分钟没有交换数据了，那么整个集群处于严重的元数据不一致的情况，就会有问题<br>所以 cluster_node_timeout 可以调节，如果调节比较大，那么会降低发送的频率<br>每次 ping，一个是带上自己节点的信息，还有就是带上 1&#x2F;10 其他节点的信息，发送出去，进行数据交换<br>至少包含 3 个其他节点的信息，最多包含总节点-2 个其他节点的信息</p>
+<h2 id="节点间的内部通信机制">节点间的内部通信机制<a class="post-anchor" href="#节点间的内部通信机制"></a></h2><p>1、基础通信原理<br>（1）redis cluster 节点间采取 gossip 协议进行通信<br>跟集中式不同，不是将集群元数据（节点信息，故障，等等）集中存储在某个节点上，而是互相之间不断通信，保持整个集群所有节点的数据是完整的<br>（2）10000 端口<br>每个节点都有一个专门用于节点间通信的端口，就是自己提供服务的端口号+10000，比如 7001，那么用于节点间通信的就是 17001 端口<br>每隔节点每隔一段时间都会往另外几个节点发送 ping 消息，同时其他几点接收到 ping 之后返回 pong<br>（3）交换的信息<br>故障信息，节点的增加和移除，hash slot 信息，等等<br>2、gossip 协议<br>gossip 协议包含多种消息，包括 ping，pong，meet，fail，等等<br>meet: 某个节点发送 meet 给新加入的节点，让新节点加入集群中，然后新节点就会开始与其他节点进行通信<br>redis-trib.rb add-node<br>其实内部就是发送了一个 gossip meet 消息，给新加入的节点，通知那个节点去加入我们的集群<br>ping: 每个节点都会频繁给其他节点发送 ping，其中包含自己的状态还有自己维护的集群元数据，互相通过 ping 交换元数据<br>每个节点每秒都会频繁发送 ping 给其他的集群，ping，频繁的互相之间交换数据，互相进行元数据的更新<br>pong: 返回 ping 和 meet，包含自己的状态和其他信息，也可以用于信息广播和更新<br>fail: 某个节点判断另一个节点 fail 之后，就发送 fail 给其他节点，通知其他节点，指定的节点宕机了<br>3、ping 消息深入<br>ping 很频繁，而且要携带一些元数据，所以可能会加重网络负担<br>每个节点每秒会执行 10 次 ping，每次会选择 5 个最久没有通信的其他节点<br>当然如果发现某个节点通信延时达到了 cluster_node_timeout / 2，那么立即发送 ping，避免数据交换延时过长，落后的时间太长了<br>比如说，两个节点之间都 10 分钟没有交换数据了，那么整个集群处于严重的元数据不一致的情况，就会有问题<br>所以 cluster_node_timeout 可以调节，如果调节比较大，那么会降低发送的频率<br>每次 ping，一个是带上自己节点的信息，还有就是带上 1/10 其他节点的信息，发送出去，进行数据交换<br>至少包含 3 个其他节点的信息，最多包含总节点-2 个其他节点的信息</p>
 <hr>
-<h2 id="面向集群的-jedis-内部实现原理"><a href="#面向集群的-jedis-内部实现原理" class="headerlink" title="面向集群的 jedis 内部实现原理"></a>面向集群的 jedis 内部实现原理</h2><p>开发，jedis，redis 的 java client 客户端，redis cluster，jedis cluster api<br>jedis cluster api 与 redis cluster 集群交互的一些基本原理<br>1、基于重定向的客户端<br>redis-cli -c，自动重定向<br>（1）请求重定向<br>客户端可能会挑选任意一个 redis 实例去发送命令，每个 redis 实例接收到命令，都会计算 key 对应的 hash slot<br>如果在本地就在本地处理，否则返回 moved 给客户端，让客户端进行重定向<br>cluster keyslot mykey，可以查看一个 key 对应的 hash slot 是什么<br>用 redis-cli 的时候，可以加入-c 参数，支持自动的请求重定向，redis-cli 接收到 moved 之后，会自动重定向到对应的节点执行命令<br>（2）计算 hash slot<br>计算 hash slot 的算法，就是根据 key 计算 CRC16 值，然后对 16384 取模，拿到对应的 hash slot<br>用 hash tag 可以手动指定 key 对应的 slot，同一个 hash tag 下的 key，都会在一个 hash slot 中，比如 set mykey1:{100}和 set mykey2:{100}<br>（3）hash slot 查找<br>节点间通过 gossip 协议进行数据交换，就知道每个 hash slot 在哪个节点上<br>（4）hash slot 计算<br>redis cluster 中有固定的 16384 个 hash slot，这 16384 个 slot 会均匀分配到各个 master 上面，通过这种模式，想要判断一个 key，value 想要存到那一台主机上，只需要算出这个 key 对应的 slot 是哪一个，集群模式 redis 中的 master 存有自己所有的 slot 信息，除此还会保存其他 master 和其他 master 所有的 slot 信息<br>2、smart jedis<br>（1）什么是 smart jedis<br>基于重定向的客户端，很消耗网络 IO，因为大部分情况下，可能都会出现一次请求重定向，才能找到正确的节点<br>所以大部分的客户端，比如 java redis 客户端，就是 jedis，都是 smart 的<br>本地维护一份 hashslot -&gt; node 的映射表，缓存，大部分情况下，直接走本地缓存就可以找到 hashslot -&gt; node，不需要通过节点进行 moved 重定向<br>（2）JedisCluster 的工作原理<br>在 JedisCluster 初始化的时候，就会随机选择一个 node，初始化 hashslot -&gt; node 映射表，同时为每个节点创建一个 JedisPool 连接池<br>每次基于 JedisCluster 执行操作，首先 JedisCluster 都会在本地计算 key 的 hashslot，然后在本地映射表找到对应的节点<br>如果那个 node 正好还是持有那个 hashslot，那么就 ok; 如果说进行了 reshard 这样的操作，可能 hashslot 已经不在那个 node 上了，就会返回 moved<br>如果 JedisCluter API 发现对应的节点返回 moved，那么利用该节点的元数据，更新本地的 hashslot -&gt; node 映射表缓存<br>重复上面几个步骤，直到找到对应的节点，如果重试超过 5 次，那么就报错，JedisClusterMaxRedirectionException<br>jedis 老版本，可能会出现在集群某个节点故障还没完成自动切换恢复时，频繁更新 hash slot，频繁 ping 节点检查活跃，导致大量网络 IO 开销<br>jedis 最新版本，对于这些过度的 hash slot 更新和 ping，都进行了优化，避免了类似问题<br>（3）hashslot 迁移和 ask 重定向<br>如果 hash slot 正在迁移，那么会返回 ask 重定向给 jedis<br>jedis 接收到 ask 重定向之后，会重新定位到目标节点去执行，但是因为 ask 发生在 hash slot 迁移过程中，所以 JedisCluster API 收到 ask 是不会更新 hashslot 本地缓存<br>已经可以确定说，hashslot 已经迁移完了，moved 是会更新本地 hashslot-&gt;node 映射表缓存的</p>
+<h2 id="面向集群的-jedis-内部实现原理">面向集群的 jedis 内部实现原理<a class="post-anchor" href="#面向集群的-jedis-内部实现原理"></a></h2><p>开发，jedis，redis 的 java client 客户端，redis cluster，jedis cluster api<br>jedis cluster api 与 redis cluster 集群交互的一些基本原理<br>1、基于重定向的客户端<br>redis-cli -c，自动重定向<br>（1）请求重定向<br>客户端可能会挑选任意一个 redis 实例去发送命令，每个 redis 实例接收到命令，都会计算 key 对应的 hash slot<br>如果在本地就在本地处理，否则返回 moved 给客户端，让客户端进行重定向<br>cluster keyslot mykey，可以查看一个 key 对应的 hash slot 是什么<br>用 redis-cli 的时候，可以加入-c 参数，支持自动的请求重定向，redis-cli 接收到 moved 之后，会自动重定向到对应的节点执行命令<br>（2）计算 hash slot<br>计算 hash slot 的算法，就是根据 key 计算 CRC16 值，然后对 16384 取模，拿到对应的 hash slot<br>用 hash tag 可以手动指定 key 对应的 slot，同一个 hash tag 下的 key，都会在一个 hash slot 中，比如 set mykey1:{100}和 set mykey2:{100}<br>（3）hash slot 查找<br>节点间通过 gossip 协议进行数据交换，就知道每个 hash slot 在哪个节点上<br>（4）hash slot 计算<br>redis cluster 中有固定的 16384 个 hash slot，这 16384 个 slot 会均匀分配到各个 master 上面，通过这种模式，想要判断一个 key，value 想要存到那一台主机上，只需要算出这个 key 对应的 slot 是哪一个，集群模式 redis 中的 master 存有自己所有的 slot 信息，除此还会保存其他 master 和其他 master 所有的 slot 信息<br>2、smart jedis<br>（1）什么是 smart jedis<br>基于重定向的客户端，很消耗网络 IO，因为大部分情况下，可能都会出现一次请求重定向，才能找到正确的节点<br>所以大部分的客户端，比如 java redis 客户端，就是 jedis，都是 smart 的<br>本地维护一份 hashslot -&gt; node 的映射表，缓存，大部分情况下，直接走本地缓存就可以找到 hashslot -&gt; node，不需要通过节点进行 moved 重定向<br>（2）JedisCluster 的工作原理<br>在 JedisCluster 初始化的时候，就会随机选择一个 node，初始化 hashslot -&gt; node 映射表，同时为每个节点创建一个 JedisPool 连接池<br>每次基于 JedisCluster 执行操作，首先 JedisCluster 都会在本地计算 key 的 hashslot，然后在本地映射表找到对应的节点<br>如果那个 node 正好还是持有那个 hashslot，那么就 ok; 如果说进行了 reshard 这样的操作，可能 hashslot 已经不在那个 node 上了，就会返回 moved<br>如果 JedisCluter API 发现对应的节点返回 moved，那么利用该节点的元数据，更新本地的 hashslot -&gt; node 映射表缓存<br>重复上面几个步骤，直到找到对应的节点，如果重试超过 5 次，那么就报错，JedisClusterMaxRedirectionException<br>jedis 老版本，可能会出现在集群某个节点故障还没完成自动切换恢复时，频繁更新 hash slot，频繁 ping 节点检查活跃，导致大量网络 IO 开销<br>jedis 最新版本，对于这些过度的 hash slot 更新和 ping，都进行了优化，避免了类似问题<br>（3）hashslot 迁移和 ask 重定向<br>如果 hash slot 正在迁移，那么会返回 ask 重定向给 jedis<br>jedis 接收到 ask 重定向之后，会重新定位到目标节点去执行，但是因为 ask 发生在 hash slot 迁移过程中，所以 JedisCluster API 收到 ask 是不会更新 hashslot 本地缓存<br>已经可以确定说，hashslot 已经迁移完了，moved 是会更新本地 hashslot-&gt;node 映射表缓存的</p>
 <hr>
-<h2 id="高可用性与主备切换原理"><a href="#高可用性与主备切换原理" class="headerlink" title="高可用性与主备切换原理"></a>高可用性与主备切换原理</h2><p>redis cluster 的高可用的原理，几乎跟哨兵是类似的<br>1、判断节点宕机<br>如果一个节点认为另外一个节点宕机，那么就是 pfail，主观宕机<br>如果多个节点都认为另外一个节点宕机了，那么就是 fail，客观宕机，跟哨兵的原理几乎一样，sdown，odown<br>在 cluster-node-timeout 内，某个节点一直没有返回 pong，那么就被认为 pfail<br>如果一个节点认为某个节点 pfail 了，那么会在 gossip ping 消息中，ping 给其他节点，如果超过半数的节点都认为 pfail 了，那么就会变成 fail<br>2、从节点过滤<br>对宕机的 master node，从其所有的 slave node 中，选择一个切换成 master node<br>检查每个 slave node 与 master node 断开连接的时间，如果超过了 cluster-node-timeout * cluster-slave-validity-factor，那么就没有资格切换成 master<br>这个也是跟哨兵是一样的，从节点超时过滤的步骤<br>3、从节点选举<br>哨兵：对所有从节点进行排序，slave priority，offset，run id<br>每个从节点，都根据自己对 master 复制数据的 offset，来设置一个选举时间，offset 越大（复制数据越多）的从节点，选举时间越靠前，优先进行选举<br>所有的 master node 开始 slave 选举投票，给要进行选举的 slave 进行投票，如果大部分 master node（N&#x2F;2 + 1）都投票给了某个从节点，那么选举通过，那个从节点可以切换成 master<br>从节点执行主备切换，从节点切换为主节点，整个流程跟哨兵相比，非常类似，所以说，redis cluster 功能强大，直接集成了 replication 和 sentinal 的功能<br>4、slave 冗余<br>如果一个 master 搭配一个 slave，这时可以给集群添加 slave 冗余，当其中一个 master 对应的冗余挂掉后，冗余的 slave 可以自动迁移到对应的 master 上去。</p>
+<h2 id="高可用性与主备切换原理">高可用性与主备切换原理<a class="post-anchor" href="#高可用性与主备切换原理"></a></h2><p>redis cluster 的高可用的原理，几乎跟哨兵是类似的<br>1、判断节点宕机<br>如果一个节点认为另外一个节点宕机，那么就是 pfail，主观宕机<br>如果多个节点都认为另外一个节点宕机了，那么就是 fail，客观宕机，跟哨兵的原理几乎一样，sdown，odown<br>在 cluster-node-timeout 内，某个节点一直没有返回 pong，那么就被认为 pfail<br>如果一个节点认为某个节点 pfail 了，那么会在 gossip ping 消息中，ping 给其他节点，如果超过半数的节点都认为 pfail 了，那么就会变成 fail<br>2、从节点过滤<br>对宕机的 master node，从其所有的 slave node 中，选择一个切换成 master node<br>检查每个 slave node 与 master node 断开连接的时间，如果超过了 cluster-node-timeout * cluster-slave-validity-factor，那么就没有资格切换成 master<br>这个也是跟哨兵是一样的，从节点超时过滤的步骤<br>3、从节点选举<br>哨兵：对所有从节点进行排序，slave priority，offset，run id<br>每个从节点，都根据自己对 master 复制数据的 offset，来设置一个选举时间，offset 越大（复制数据越多）的从节点，选举时间越靠前，优先进行选举<br>所有的 master node 开始 slave 选举投票，给要进行选举的 slave 进行投票，如果大部分 master node（N/2 + 1）都投票给了某个从节点，那么选举通过，那个从节点可以切换成 master<br>从节点执行主备切换，从节点切换为主节点，整个流程跟哨兵相比，非常类似，所以说，redis cluster 功能强大，直接集成了 replication 和 sentinal 的功能<br>4、slave 冗余<br>如果一个 master 搭配一个 slave，这时可以给集群添加 slave 冗余，当其中一个 master 对应的冗余挂掉后，冗余的 slave 可以自动迁移到对应的 master 上去。</p>
 <hr>
-<h2 id="集群优化"><a href="#集群优化" class="headerlink" title="集群优化"></a>集群优化</h2><p>1、fork 耗时导致高并发请求延时<br>RDB 和 AOF 的时候，其实会有生成 RDB 快照，AOF rewrite，耗费磁盘 IO 的过程，主进程 fork 子进程<br>fork 的时候，子进程是需要拷贝父进程的空间内存页表的，也是会耗费一定的时间的<br>一般来说，如果父进程内存有 1 个 G 的数据，那么 fork 可能会耗费在 20ms 左右，如果是 10G~30G，那么就会耗费 20 _ 10，甚至 20 _ 30，也就是几百毫秒的时间<br>info stats 中的 latest_fork_usec，可以看到最近一次 fork 的时长<br>redis 单机 QPS 一般在几万，fork 可能一下子就会拖慢几万条操作的请求时长，从几毫秒变成 1 秒<br>优化思路<br>fork 耗时跟 redis 主进程的内存有关系，一般控制 redis 的内存在 10GB 以内，slave -&gt; master，全量复制<br>2、AOF 的阻塞问题<br>redis 将数据写入 AOF 缓冲区，单独开一个现场做 fsync 操作，每秒一次<br>但是 redis 主线程会检查两次 fsync 的时间，如果距离上次 fsync 时间超过了 2 秒，那么写请求就会阻塞<br>everysec，最多丢失 2 秒的数据<br>一旦 fsync 超过 2 秒的延时，整个 redis 就被拖慢<br>优化思路<br>优化硬盘写入速度，建议采用 SSD，不要用普通的机械硬盘，SSD，大幅度提升磁盘读写的速度<br>3、主从复制延迟问题<br>主从复制可能会超时严重，这个时候需要良好的监控和报警机制<br>在 info replication 中，可以看到 master 和 slave 复制的 offset，做一个差值就可以看到对应的延迟量<br>如果延迟过多，那么就进行报警<br>4、主从复制风暴问题<br>如果一下子让多个 slave 从 master 去执行全量复制，一份大的 rdb 同时发送到多个 slave，会导致网络带宽被严重占用<br>如果一个 master 真的要挂载多个 slave，那尽量用树状结构，不要用星型结构</p>
+<h2 id="集群优化">集群优化<a class="post-anchor" href="#集群优化"></a></h2><p>1、fork 耗时导致高并发请求延时<br>RDB 和 AOF 的时候，其实会有生成 RDB 快照，AOF rewrite，耗费磁盘 IO 的过程，主进程 fork 子进程<br>fork 的时候，子进程是需要拷贝父进程的空间内存页表的，也是会耗费一定的时间的<br>一般来说，如果父进程内存有 1 个 G 的数据，那么 fork 可能会耗费在 20ms 左右，如果是 10G~30G，那么就会耗费 20 _ 10，甚至 20 _ 30，也就是几百毫秒的时间<br>info stats 中的 latest_fork_usec，可以看到最近一次 fork 的时长<br>redis 单机 QPS 一般在几万，fork 可能一下子就会拖慢几万条操作的请求时长，从几毫秒变成 1 秒<br>优化思路<br>fork 耗时跟 redis 主进程的内存有关系，一般控制 redis 的内存在 10GB 以内，slave -&gt; master，全量复制<br>2、AOF 的阻塞问题<br>redis 将数据写入 AOF 缓冲区，单独开一个现场做 fsync 操作，每秒一次<br>但是 redis 主线程会检查两次 fsync 的时间，如果距离上次 fsync 时间超过了 2 秒，那么写请求就会阻塞<br>everysec，最多丢失 2 秒的数据<br>一旦 fsync 超过 2 秒的延时，整个 redis 就被拖慢<br>优化思路<br>优化硬盘写入速度，建议采用 SSD，不要用普通的机械硬盘，SSD，大幅度提升磁盘读写的速度<br>3、主从复制延迟问题<br>主从复制可能会超时严重，这个时候需要良好的监控和报警机制<br>在 info replication 中，可以看到 master 和 slave 复制的 offset，做一个差值就可以看到对应的延迟量<br>如果延迟过多，那么就进行报警<br>4、主从复制风暴问题<br>如果一下子让多个 slave 从 master 去执行全量复制，一份大的 rdb 同时发送到多个 slave，会导致网络带宽被严重占用<br>如果一个 master 真的要挂载多个 slave，那尽量用树状结构，不要用星型结构</p>
 <hr>
-<p>linux 系统配置相关的优化，redis 启动的时候会有相应的提示。<br>1、vm.overcommit_memory<br>0: 检查有没有足够内存，没有的话申请内存失败<br>1: 允许使用内存直到用完为止<br>2: 内存地址空间不能超过 swap + 50%<br>如果是 0 的话，可能导致类似 fork 等操作执行失败，申请不到足够的内存空间<br>2、swapiness<br>保证 redis 不会被系统主动杀掉<br>cat &#x2F;proc&#x2F;version，查看 linux 内核版本<br>如果 linux 内核版本&lt;3.5，那么 swapiness 设置为 0，这样系统宁愿 swap 也不会 oom killer（杀掉进程）<br>如果 linux 内核版本&gt;&#x3D;3.5，那么 swapiness 设置为 1，这样系统宁愿 swap 也不会 oom killer<br>3、设置最大打开文件句柄<br>ulimit -n 10032 10032<br>4、tcp backlog</p>
+<p>linux 系统配置相关的优化，redis 启动的时候会有相应的提示。<br>1、vm.overcommit_memory<br>0: 检查有没有足够内存，没有的话申请内存失败<br>1: 允许使用内存直到用完为止<br>2: 内存地址空间不能超过 swap + 50%<br>如果是 0 的话，可能导致类似 fork 等操作执行失败，申请不到足够的内存空间<br>2、swapiness<br>保证 redis 不会被系统主动杀掉<br>cat /proc/version，查看 linux 内核版本<br>如果 linux 内核版本&lt;3.5，那么 swapiness 设置为 0，这样系统宁愿 swap 也不会 oom killer（杀掉进程）<br>如果 linux 内核版本&gt;=3.5，那么 swapiness 设置为 1，这样系统宁愿 swap 也不会 oom killer<br>3、设置最大打开文件句柄<br>ulimit -n 10032 10032<br>4、tcp backlog</p>
+</body></html>
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://handsomebo.com/2020/11/21/yuque/Redis%E9%9B%86%E7%BE%A4/" data-id="cl3zp2b5w000w1w7s7pludibv" data-title="Redis集群" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
   
-    
-<nav id="article-nav">
-  
-    <a href="/2020/12/04/yuque/GC%E5%92%8CGC%20Tuning/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          GC和GC Tuning
-        
+    <div class="post-reward">
+      <div id="qr">
+        <div class="wrap">
+            
+            <div class="bg-wrap">
+              <a href="/images/zhifubao.png" target="_block" class="bg" style="background-image:url('/images/zhifubao.png')"></a>
+              支付宝
+            </div>
+            
+            
+            <div class="bg-wrap">
+                <a href="/images/weixin.png" target="_block" class="bg" style="background-image:url('/images/weixin.png')"></a>
+              微信
+            </div>
+            
+        </div>
       </div>
-    </a>
+    </div>
   
-  
-    <a href="/2020/11/21/yuque/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">分布式锁</div>
-    </a>
-  
-</nav>
+  <div class="post-guide">
+    <div class="item left">
+        
+          <a href="/2020/12/04/yuque/GC%E5%92%8CGC%20Tuning/">GC和GC Tuning</a>
+        
+    </div>
+    <div class="item right">
+        
+          <a href="/2020/11/21/yuque/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">分布式锁</a>
+        
+    </div>
+  </div>
 
+  
+
+  <div class="post-copyright">
+    <!-- <div class="auth">
+      本文作者：<a href="http://handsomebo.com">HandsomeBo</a>
+    </div> -->
+    <div class="link">
+      永久链接：<a href="http://handsomebo.com">http://handsomebo.com</a>
+    </div>
+    <div class="declare">
+      Simple is Awesome
+    </div>
+  </div>
+
+  <div id="comment"></div>
+
+  
   
 </article>
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%9F%BA%E7%A1%80/" rel="tag">Java基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%80%E5%8E%86/" rel="tag">简历</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/Java%E5%9F%BA%E7%A1%80/" style="font-size: 20px;">Java基础</a> <a href="/tags/%E7%AE%80%E5%8E%86/" style="font-size: 10px;">简历</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2022/06/01/%E4%B8%AA%E4%BA%BA%E7%AE%80%E5%8E%86-%E5%BE%90%E5%8D%9A/">个人简历</a>
-          </li>
-        
-          <li>
-            <a href="/2022/06/01/yuque/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E7%9B%B8%E5%85%B3/">系统设计相关</a>
-          </li>
-        
-          <li>
-            <a href="/2022/05/15/yuque/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a>
-          </li>
-        
-          <li>
-            <a href="/2022/05/15/yuque/%E9%97%AE%E9%A2%98%E4%BB%A5%E5%8F%8A%E6%96%B9%E6%A1%88/">问题以及方案</a>
-          </li>
-        
-          <li>
-            <a href="/2022/05/15/yuque/%E7%BC%93%E5%AD%98%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8F%8C%E5%86%99%E4%B8%8D%E4%B8%80%E8%87%B4/">缓存和数据库双写不一致</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
+        <footer>
+          <div class="copyright">
+            ©2022
+            <a href="http://handsomebo.com">HandsomeBo</a> Powered by <a href="http://handsomebo.com">HandsomeBo</a>
+          </div>
+          
+        </footer>
       </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2022 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
     </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
+  </body>
   
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
-</body>
 </html>
+<script type="text/javascript">
+                  window.HUHU_CONFIG = JSON.parse("{\"share\":[\"weibo\",\"weixin\",\"qqkongjian\",\"QQ\",\"douban\",\"facebook\",\"twitter\",\"google\"],\"service_worker\":{\"open\":false}}")
+                </script> <script type="text/javascript">window.addEventListener('load', function() {
+    
+    window.loadJs = function(d, m, a) {
+      var c = document.getElementsByTagName('head')[0] || document.head || document.documentElement
+      var b = document.createElement('script')
+      b.defer = true
+      b.setAttribute('type', 'text/javascript')
+      b.setAttribute('charset', 'UTF-8')
+      b.setAttribute('async', 'true')
+      b.setAttribute('src', d)
+      m && b.setAttribute('data-main', '/scripts/app-built')
+      if (typeof a === 'function') {
+        if (window.attachEvent) {
+          b.onreadystatechange = function() {
+            var e = b.readyState
+            if (e === 'loaded' || e === 'complete') {
+              b.onreadystatechange = null
+              a()
+            }
+          }
+        } else {
+          b.onload = a
+        }
+      }
+      c.appendChild(b)
+    }
+    window.loadJs && window.loadJs('https://cdn.bootcss.com/require.js/2.3.6/require.min.js', true, function() {require.config({"paths":{"util":"util","share":"share","search":"search","pagemap":"pagemap.min","registerSW":"registerSW","valine":"cdn/Valine.min","av":["https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min"],"pjax":["https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min"],"jquery":["https://cdn.bootcss.com/jquery/3.4.1/jquery.min"],"confirm":["https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min"],"fancybox":["https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min"],"chart":["https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.bundle.min"]},"map":{"*":{"css":"https://cdn.bootcss.com/require-css/0.1.10/css.min.js"}},"shim":{"fancybox":{"deps":["css!https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css"]},"confirm":{"deps":["css!https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.css"]},"chart":{"deps":["css!https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.min.css"]}},"waitSeconds":3})})
+  })</script> <script type="text/javascript">
+                  ;(function() {
+                    var bp = document.createElement('script')
+                    var curProtocol = window.location.protocol.split(':')[0]
+                    if (curProtocol === 'https') {
+                      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js'
+                    } else {
+                      bp.src = 'http://push.zhanzhang.baidu.com/push.js'
+                    }
+                    var s = document.getElementsByTagName('script')[0]
+                    s.parentNode.insertBefore(bp, s)
+                  })()
+                </script> 
