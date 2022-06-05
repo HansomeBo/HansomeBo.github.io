@@ -143,6 +143,11 @@
         <article class="post-entry">
     <div class="header">
       
+        <div class="top">
+          <!-- 置顶图标 -->
+          <!-- <div class="iconfont icon-zuirehotxiankuang animated infinite heartBeat"></div> -->
+        </div>
+      
       <div class="title">Redis底层数据结构</div>
       <div class="meta">
         <span class="item">
@@ -170,12 +175,12 @@
       <div>
       </div>
     </div>
-    <p>redis 对外展现五种数据类型，string（字符串），hash（哈希）、list（列表）、set（集合）、zset（有序集合）。每种数据结构，redis 都提供了不同的内部编码实现方式（内部编码可以通过 object encoding key 查看），以便使用不同的场景  </p>
+    <html><head></head><body><p>redis 对外展现五种数据类型，string（字符串），hash（哈希）、list（列表）、set（集合）、zset（有序集合）。每种数据结构，redis 都提供了不同的内部编码实现方式（内部编码可以通过 object encoding key 查看），以便使用不同的场景 &nbsp;</p>
 <p><strong>1、string</strong><br>1）int：8 个字节的长整型，如果一个字符串保存的类型是整数值，并且这个值可以 用 long 类型来表示，name 字符串对象会将整数值保存在字符串对象结构的 ptr 属性里面，并将字符串对象的编码设置为 int。<br>2）embstr：小于等于 39 个字节的字符串，embstr 编码是专门用于保存短字符串的优化编码方式。相比 raw 有如下好处：<br>A、embstr 编码将创建字符串对象所需的空间分配的次数从 raw 编码的两次降低为一次。<br>B、释放 embstr 编码的字符串对象只需要调用一次内存释放函数，而释放 raw 编码对象的字符串对象需要调用两次内存释放函数<br>C、因为 embstr 编码的字符串对象的所有数据都保存在一块连续的内存里面，所以这种编码的字符串对象比起 raw 编码的字符串对象能更好地利用缓存带来的优势。<br>3）raw：大于 39 个字节的字符串，用简单动态字符串（SDS）来保存，将这个字符串的对象编码设置为 raw。<br>ps:<br>sds 相比传统字符串的优点：因为保存了长度字段常 o(1)时间复杂度获取字符串长度；杜绝缓冲区溢出；减少修改字符串时带来的内存重分配次数；</p>
 <p><strong>2、hash 哈希的内部编码</strong><br>1）ziplist（压缩列表）：当哈希类型元素小于 has-max-ziplist-entries 配置（默认 512 个），同事所有值都小于 hash-max-ziplist-value 配置（默认 64 个字节）时，redis 会使用 ziplist 作为哈希的内部实现。ziplist 使用更加紧凑的结构实现多个元素的连续存储，所以在节省内存方面比 hashtable 更加优秀<br>2）hashtable（哈希表）：当哈希类型无法满足 ziplist 的条件时，redis 会使用 hashtable 作为哈希的内部实现。因为 ziplist 的读写效率会下降，而 hashtable 的读写时间复杂度为 o（1）<br><strong>3、list 列表的内部编码</strong><br>1）ziplist（压缩列表）<br>2）linkedlist（链表）：当列表类型无法满足条件的时候，redis 会使用 linkedlist 作为列表的内部实现</p>
 <p><strong>4、set 集合</strong><br>1）intset（整数集合）：当集合中的元素都是整数且元素个数小于 set-max-intset-entries 配置（默认 512 个）是，redis 会选 intset 作为集合的内部实现，从而减少内存使用<br>2）hashtable：当集合元素无法满足 intset 的条件时，redis 会使用 hashtable 作为集合的内部实现</p>
 <p><strong>5、zset 有序集合的内部编码</strong><br>1）ziplist：<br>2）skiplist（跳跃表）：当 ziplist 条件不满足的时候，有序集合会使用 skiplist 作为内部 实现，因为 ziplist 的读写效率会下降<br>string int 如果保存的是整数值，用内部编码使用 int，效率高 embstr 少于 39 字节的字符串，只需要一次分配内存，一次释放内存 raw 大于 39 字节的字符串，需要两次分配内存，两次释放内存 hash ziplist 压缩列表，更紧凑实现多元素的连续存储，节省内存，当元素个数小于 512，value 长度小于 64 字节 hashtable 当 ziplist 不满足条件时会使用 hashtable，时间复杂度 O(1) list ziplist 压缩列表，更紧凑实现多元素的连续存储，节省内存，当元素个数小于 512，value 长度小于 64 字节 linklist 当 ziplist 不满足条件时会使用 linklist set intset 当集合中的元素都是整数，且元素个数小于 512，会使用 intset 内部编码，减少内存使用 hashtable 当 intset 不满足条件时，会使用 hashtable zset ziplist 压缩列表，更紧凑实现多元素的连续存储，节省内存，当元素个数小于 512，value 长度小于 64 字节 skiplist 当 ziplist 不满足条件时，使用跳跃表<br>链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/fst438060684/article/details/80563186">redis 的数据结构和内部编码</a></p>
-
+</body></html>
 
   
     <div class="post-reward">
@@ -217,7 +222,7 @@
       本文作者：<a href="http://handsomebo.com">HandsomeBo</a>
     </div> -->
     <div class="link">
-      永久链接：<a href="http://handsomebo.com">http://handsomebo.com</a>
+      <a href="http://handsomebo.com">http://handsomebo.com</a>
     </div>
     <div class="declare">
       Simple is Awesome
